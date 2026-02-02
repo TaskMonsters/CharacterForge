@@ -948,6 +948,15 @@
                 z-index: 150;
                 width: 280px;
             }
+            
+            .sidebar-header {
+                padding: 16px;
+            }
+            
+            .sidebar-header .btn {
+                font-size: 14px;
+                padding: 12px;
+            }
 
             .content {
                 padding: 16px;
@@ -977,22 +986,15 @@
             
             .header-right {
                 width: 100%;
-                overflow-x: auto;
-                overflow-y: hidden;
-                -webkit-overflow-scrolling: touch;
-                scrollbar-width: none;
-                -ms-overflow-style: none;
-                flex-wrap: nowrap;
-            }
-            
-            .header-right::-webkit-scrollbar {
-                display: none;
+                flex-wrap: wrap;
+                gap: 8px;
             }
             
             .header-bottom button {
-                font-size: 13px;
-                padding: 10px 14px;
-                flex-shrink: 0;
+                font-size: 12px;
+                padding: 10px 12px;
+                flex: 1 1 auto;
+                min-width: fit-content;
             }
             
             .story-name-input {
@@ -1335,6 +1337,7 @@
             <!-- Sidebar -->
             <aside class="sidebar" id="sidebar">
                 <div class="sidebar-header">
+                    <button id="sidebarHomeBtn" class="btn" style="width: 100%; margin-bottom: 10px;">🏠 Home</button>
                     <button id="sidebarAddBtn" class="btn btn-primary" style="width: 100%;">✚ New Character</button>
                 </div>
                 <div class="sidebar-content">
@@ -1640,6 +1643,7 @@
                 characterForm: document.getElementById('characterForm'),
                 addCharacterBtn: document.getElementById('addCharacterBtn'),
                 sidebarAddBtn: document.getElementById('sidebarAddBtn'),
+                sidebarHomeBtn: document.getElementById('sidebarHomeBtn'),
                 exportBtn: document.getElementById('exportBtn'),
                 exportPDFBtn: document.getElementById('exportPDFBtn'),
                 importBtn: document.getElementById('importBtn'),
@@ -1721,6 +1725,7 @@
             elements.storyName.addEventListener('input', handleStoryNameChange);
             elements.addCharacterBtn.addEventListener('click', addCharacter);
             elements.sidebarAddBtn.addEventListener('click', addCharacter);
+            elements.sidebarHomeBtn.addEventListener('click', showDashboard);
             elements.exportBtn.addEventListener('click', exportData);
             elements.exportPDFBtn.addEventListener('click', exportPDF);
             elements.importBtn.addEventListener('click', importData);
