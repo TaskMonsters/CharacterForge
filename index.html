@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>Character Forge - Ultimate Character Development Toolkit</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -58,6 +58,19 @@
             overflow: hidden;
             -webkit-font-smoothing: antialiased;
             -moz-osx-font-smoothing: grayscale;
+            /* Prevent zoom on mobile */
+            touch-action: pan-x pan-y;
+            -ms-touch-action: pan-x pan-y;
+        }
+        
+        /* Prevent zoom on double-tap and pinch */
+        * {
+            touch-action: manipulation;
+        }
+        
+        /* Additional zoom prevention for inputs */
+        input, textarea, select {
+            font-size: 16px !important;
         }
 
         h1, h2, h3, h4, h5, h6 {
@@ -108,6 +121,18 @@
             display: flex;
             align-items: center;
             gap: 12px;
+            /* Enable horizontal scrolling on mobile */
+            overflow-x: auto;
+            overflow-y: hidden;
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: none; /* Firefox */
+            -ms-overflow-style: none; /* IE/Edge */
+            flex-wrap: nowrap;
+        }
+        
+        /* Hide scrollbar for Chrome/Safari */
+        .header-right::-webkit-scrollbar {
+            display: none;
         }
 
         .logo-section {
@@ -941,13 +966,19 @@
             }
 
             .header-bottom {
-                flex-wrap: wrap;
+                flex-wrap: nowrap;
                 gap: 12px;
+            }
+            
+            .header-right {
+                flex: 1;
+                min-width: 0;
             }
             
             .header-bottom button {
                 font-size: 13px;
                 padding: 10px 14px;
+                flex-shrink: 0;
             }
             
             .story-name-group {
@@ -1692,14 +1723,28 @@
             elements.resetLayoutBtn.addEventListener('click', resetLayoutHandler);
             elements.closeComparisonModal.addEventListener('click', () => {
                 elements.comparisonModal.classList.remove('active');
+                unlockScroll();
             });
             elements.closeInterviewModal.addEventListener('click', () => {
                 elements.interviewModal.classList.remove('active');
+                unlockScroll();
             });
             
             // Close modals on outside click
             elements.relationshipMapModal.addEventListener('click', (e) => {
                 if (e.target === elements.relationshipMapModal) closeRelationshipMap();
+            });
+            elements.comparisonModal.addEventListener('click', (e) => {
+                if (e.target === elements.comparisonModal) {
+                    elements.comparisonModal.classList.remove('active');
+                    unlockScroll();
+                }
+            });
+            elements.interviewModal.addEventListener('click', (e) => {
+                if (e.target === elements.interviewModal) {
+                    elements.interviewModal.classList.remove('active');
+                    unlockScroll();
+                }
             });
             elements.comparisonModal.addEventListener('click', (e) => {
                 if (e.target === elements.comparisonModal) {
@@ -1718,8 +1763,32 @@
                     closeRelationshipMap();
                     elements.comparisonModal.classList.remove('active');
                     elements.interviewModal.classList.remove('active');
+                    unlockScroll();
                 }
             });
+            
+            // Prevent pinch-to-zoom on mobile
+            document.addEventListener('gesturestart', (e) => {
+                e.preventDefault();
+            });
+            
+            document.addEventListener('gesturechange', (e) => {
+                e.preventDefault();
+            });
+            
+            document.addEventListener('gestureend', (e) => {
+                e.preventDefault();
+            });
+            
+            // Prevent double-tap zoom
+            let lastTouchEnd = 0;
+            document.addEventListener('touchend', (e) => {
+                const now = Date.now();
+                if (now - lastTouchEnd <= 300) {
+                    e.preventDefault();
+                }
+                lastTouchEnd = now;
+            }, { passive: false });
         }
 
         // Toggle Sidebar
@@ -2587,6 +2656,7 @@
             
             elements.interviewContent.innerHTML = html;
             elements.interviewModal.classList.add('active');
+            lockScroll();
             
             // Tab switching
             document.querySelectorAll('.tab').forEach(tab => {
@@ -2609,17 +2679,36 @@
             });
         }
 
+        // Scroll lock utilities
+        function lockScroll() {
+            document.body.style.overflow = 'hidden';
+            document.body.style.position = 'fixed';
+            document.body.style.width = '100%';
+            document.body.style.top = `-${window.scrollY}px`;
+        }
+        
+        function unlockScroll() {
+            const scrollY = document.body.style.top;
+            document.body.style.overflow = '';
+            document.body.style.position = '';
+            document.body.style.width = '';
+            document.body.style.top = '';
+            window.scrollTo(0, parseInt(scrollY || '0') * -1);
+        }
+        
         // Open Relationship Map
         function openRelationshipMap() {
             loadRelationships();
             populateRelationshipMap();
             elements.relationshipMapModal.classList.add('active');
+            lockScroll();
         }
 
         // Close Relationship Map
         function closeRelationshipMap() {
             elements.relationshipMapModal.classList.remove('active');
             resetSelection();
+            unlockScroll();
         }
         
         // Populate relationship map with all characters
@@ -3036,6 +3125,7 @@
             
             elements.comparisonContent.innerHTML = html;
             elements.comparisonModal.classList.add('active');
+            lockScroll();
         }
 
         // Export Data
