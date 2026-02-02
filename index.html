@@ -1,0 +1,3276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Character Forge - Ultimate Character Development Toolkit</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@600;700&family=Crimson+Pro:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            /* Light Mode - Black & White Monochrome */
+            --bg-primary: #ffffff;
+            --bg-secondary: #f5f5f5;
+            --bg-sidebar: #fafafa;
+            --text-primary: #000000;
+            --text-secondary: #333333;
+            --text-muted: #666666;
+            --border-color: #d0d0d0;
+            --accent-primary: #000000;
+            --accent-hover: #333333;
+            --accent-light: #e8e8e8;
+            --shadow: rgba(0, 0, 0, 0.1);
+            --success: #000000;
+            --danger: #000000;
+            --warning: #000000;
+        }
+
+        body.dark-mode {
+            /* Dark Mode - Black & White Monochrome */
+            --bg-primary: #000000;
+            --bg-secondary: #1a1a1a;
+            --bg-sidebar: #0d0d0d;
+            --text-primary: #ffffff;
+            --text-secondary: #cccccc;
+            --text-muted: #999999;
+            --border-color: #333333;
+            --accent-primary: #ffffff;
+            --accent-hover: #cccccc;
+            --accent-light: #262626;
+            --shadow: rgba(255, 255, 255, 0.1);
+            --success: #ffffff;
+            --danger: #ffffff;
+            --warning: #ffffff;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            overflow: hidden;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Playfair Display', serif;
+            font-weight: 700;
+            line-height: 1.2;
+        }
+
+        /* App Container */
+        .app-container {
+            display: flex;
+            height: 100vh;
+            height: 100dvh;
+            flex-direction: column;
+        }
+
+        /* Header */
+        .header {
+            background: var(--bg-secondary);
+            border-bottom: 2px solid var(--border-color);
+            padding: 20px 32px;
+            flex-shrink: 0;
+            position: relative;
+            z-index: 200;
+        }
+
+        .header-top {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 16px;
+        }
+
+        .header-bottom {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo-section {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .logo {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--text-primary);
+            letter-spacing: -0.5px;
+        }
+
+        .subtitle {
+            font-size: 12px;
+            color: var(--text-muted);
+            font-weight: 400;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+
+        .story-name-group {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .story-label {
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 1.5px;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+        }
+
+        .story-name-input {
+            padding: 10px 16px;
+            border: 2px solid var(--border-color);
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            border-radius: 8px;
+            font-size: 15px;
+            font-weight: 500;
+            transition: all 0.2s;
+            max-width: 600px;
+            flex: 1;
+        }
+
+        .story-name-input:focus {
+            outline: none;
+            border-color: var(--accent-primary);
+        }
+
+        .save-status {
+            font-size: 13px;
+            color: var(--text-muted);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            border: 2px solid var(--border-color);
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            transition: all 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            white-space: nowrap;
+        }
+
+        .btn:hover {
+            background: var(--accent-light);
+            border-color: var(--accent-primary);
+        }
+
+        .btn-primary {
+            background: var(--accent-primary);
+            color: var(--bg-primary);
+            border-color: var(--accent-primary);
+        }
+
+        .btn-primary:hover {
+            background: var(--accent-hover);
+            border-color: var(--accent-hover);
+        }
+
+        .btn-icon {
+            width: 44px;
+            height: 44px;
+            padding: 0;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 8px;
+        }
+
+        /* Main Content Area */
+        .main-content {
+            display: flex;
+            flex: 1;
+            overflow: hidden;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 280px;
+            background: var(--bg-sidebar);
+            border-right: 2px solid var(--border-color);
+            display: flex;
+            flex-direction: column;
+            transition: transform 0.3s ease;
+            position: relative;
+            z-index: 100;
+        }
+
+        .sidebar.collapsed {
+            transform: translateX(-100%);
+        }
+
+        .sidebar-header {
+            padding: 20px;
+            border-bottom: 2px solid var(--border-color);
+        }
+
+        .sidebar-content {
+            flex: 1;
+            overflow-y: auto;
+            padding: 12px;
+        }
+
+        .character-list {
+            list-style: none;
+        }
+
+        .character-item {
+            padding: 16px;
+            margin-bottom: 8px;
+            border: 2px solid var(--border-color);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .character-item:hover {
+            background: var(--accent-light);
+            border-color: var(--accent-primary);
+        }
+
+        .character-item.active {
+            background: var(--accent-light);
+            border-color: var(--accent-primary);
+        }
+
+        .character-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--accent-light);
+            border: 2px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 18px;
+            flex-shrink: 0;
+        }
+
+        .character-info {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .character-name {
+            font-weight: 600;
+            font-size: 15px;
+            margin-bottom: 2px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .character-role {
+            font-size: 12px;
+            color: var(--text-muted);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        /* Content Area */
+        .content {
+            flex: 1;
+            overflow-y: auto;
+            padding: 40px;
+        }
+
+        .dashboard {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .dashboard-title {
+            font-size: 48px;
+            margin-bottom: 16px;
+            text-align: center;
+        }
+
+        .dashboard-subtitle {
+            font-size: 18px;
+            color: var(--text-muted);
+            text-align: center;
+            margin-bottom: 48px;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 24px;
+            margin-bottom: 48px;
+        }
+
+        .stat-card {
+            padding: 32px;
+            border: 2px solid var(--border-color);
+            border-radius: 12px;
+            text-align: center;
+            transition: all 0.2s;
+        }
+
+        .stat-card:hover {
+            border-color: var(--accent-primary);
+            transform: translateY(-2px);
+        }
+
+        .stat-number {
+            font-size: 56px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .stat-label {
+            font-size: 14px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 600;
+        }
+
+        /* Character Form */
+        .character-form {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .form-section {
+            margin-bottom: 40px;
+            padding: 32px;
+            border: 2px solid var(--border-color);
+            border-radius: 12px;
+            background: var(--bg-secondary);
+        }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 24px;
+            padding-bottom: 16px;
+            border-bottom: 2px solid var(--border-color);
+        }
+
+        .section-icon {
+            font-size: 24px;
+        }
+
+        .section-title {
+            font-size: 24px;
+            font-weight: 700;
+        }
+
+        .form-group {
+            margin-bottom: 24px;
+        }
+
+        .form-group:last-child {
+            margin-bottom: 0;
+        }
+
+        .form-label {
+            display: block;
+            font-weight: 600;
+            font-size: 14px;
+            margin-bottom: 8px;
+            color: var(--text-secondary);
+        }
+
+        .form-input,
+        .form-select,
+        .form-textarea {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid var(--border-color);
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            border-radius: 8px;
+            font-size: 15px;
+            font-family: 'Inter', sans-serif;
+            transition: all 0.2s;
+        }
+
+        .form-input:focus,
+        .form-select:focus,
+        .form-textarea:focus {
+            outline: none;
+            border-color: var(--accent-primary);
+        }
+
+        .form-textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+        }
+
+        .form-hint {
+            font-size: 13px;
+            color: var(--text-muted);
+            margin-top: 6px;
+            font-style: italic;
+        }
+
+        /* Traits */
+        .traits-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 12px;
+        }
+
+        .trait-tag {
+            padding: 6px 12px;
+            background: var(--accent-light);
+            border: 2px solid var(--border-color);
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 500;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .trait-remove {
+            cursor: pointer;
+            font-weight: 700;
+            opacity: 0.6;
+            transition: opacity 0.2s;
+        }
+
+        .trait-remove:hover {
+            opacity: 1;
+        }
+
+        /* Image Upload */
+        .image-preview-container {
+            margin-top: 16px;
+            text-align: center;
+        }
+
+        .image-preview {
+            max-width: 300px;
+            max-height: 300px;
+            border: 2px solid var(--border-color);
+            border-radius: 8px;
+            margin: 0 auto;
+        }
+
+        .image-placeholder {
+            width: 200px;
+            height: 200px;
+            border: 2px dashed var(--border-color);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            gap: 12px;
+            margin: 0 auto;
+            color: var(--text-muted);
+        }
+
+        .image-placeholder-icon {
+            font-size: 48px;
+        }
+
+        /* Relationships */
+        .relationship-item {
+            padding: 20px;
+            border: 2px solid var(--border-color);
+            border-radius: 8px;
+            margin-bottom: 16px;
+            background: var(--bg-primary);
+        }
+
+        .relationship-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+
+        .btn-remove {
+            padding: 6px 12px;
+            font-size: 13px;
+            background: var(--danger);
+            color: var(--bg-primary);
+            border-color: var(--danger);
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: var(--bg-primary);
+            border: 2px solid var(--border-color);
+            border-radius: 12px;
+            max-width: 95vw;
+            max-height: 95vh;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .modal-header {
+            padding: 24px;
+            border-bottom: 2px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-title {
+            font-size: 24px;
+            font-weight: 700;
+        }
+
+        .modal-close {
+            width: 36px;
+            height: 36px;
+            border: none;
+            background: none;
+            font-size: 24px;
+            cursor: pointer;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 4px;
+            transition: all 0.2s;
+        }
+
+        .modal-close:hover {
+            background: var(--accent-light);
+        }
+
+        .modal-body {
+            padding: 24px;
+            overflow-y: auto;
+            flex: 1;
+        }
+
+        /* Relationship Map Canvas */
+        #relationshipCanvas {
+            display: block;
+            border: 2px solid var(--border-color);
+            border-radius: 8px;
+            background: var(--bg-secondary);
+            position: relative;
+        }
+        
+        .character-node {
+            position: absolute;
+            background: #4A90E2;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 20px;
+            cursor: move;
+            user-select: none;
+            font-size: 14px;
+            font-weight: 500;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+            transition: transform 0.2s;
+            z-index: 10;
+        }
+        
+        .character-node:hover {
+            transform: scale(1.05);
+        }
+        
+        .character-node:active {
+            cursor: move;
+        }
+        
+        .character-node.selected {
+            background: #E74C3C;
+            box-shadow: 0 0 0 3px rgba(231, 76, 60, 0.3);
+        }
+        
+        .character-node-name {
+            font-size: 11px;
+            font-weight: 600;
+            text-align: center;
+            margin-top: 2px;
+            max-width: 70px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+        
+        .character-node-role {
+            font-size: 9px;
+            color: var(--text-muted);
+            text-align: center;
+            margin-top: -2px;
+        }
+        
+        .character-node-initial {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: -4px;
+        }
+        
+        .relationship-line {
+            position: absolute;
+            height: 3px;
+            transform-origin: left center;
+            pointer-events: none;
+            z-index: 1;
+        }
+        
+        .relationship-line[data-type="family"] { background: #ff6b6b; }
+        .relationship-line[data-type="romantic"] { background: #ff69b4; }
+        .relationship-line[data-type="friendship"] { background: #00CED1; }
+        .relationship-line[data-type="professional"] { background: #4A90E2; }
+        .relationship-line[data-type="antagonistic"] { background: #8B0000; }
+        .relationship-line[data-type="mentor"] { background: #9370DB; }
+
+        .map-legend {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: var(--bg-primary);
+            border: 2px solid var(--border-color);
+            border-radius: 8px;
+            padding: 16px;
+            font-size: 13px;
+        }
+
+        .legend-title {
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 4px;
+        }
+
+        .legend-color {
+            /* Inline styles in HTML override this */
+        }
+
+        /* Timeline */
+        .timeline-container {
+            position: relative;
+            padding-left: 40px;
+        }
+
+        .timeline-line {
+            position: absolute;
+            left: 20px;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: var(--border-color);
+        }
+
+        .timeline-item {
+            position: relative;
+            padding: 20px;
+            margin-bottom: 24px;
+            border: 2px solid var(--border-color);
+            border-radius: 8px;
+            background: var(--bg-primary);
+        }
+
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -28px;
+            top: 28px;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: var(--accent-primary);
+            border: 2px solid var(--bg-primary);
+        }
+
+        .timeline-date {
+            font-weight: 700;
+            font-size: 14px;
+            color: var(--text-secondary);
+            margin-bottom: 8px;
+        }
+
+        .timeline-event {
+            font-size: 15px;
+        }
+
+        /* Comparison Matrix */
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        .comparison-table th,
+        .comparison-table td {
+            padding: 16px;
+            border: 2px solid var(--border-color);
+            text-align: left;
+        }
+
+        .comparison-table th {
+            background: var(--bg-secondary);
+            font-weight: 700;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .comparison-table td {
+            font-size: 14px;
+        }
+
+        /* Interview Mode */
+        .interview-question {
+            padding: 24px;
+            margin-bottom: 20px;
+            border: 2px solid var(--border-color);
+            border-radius: 8px;
+            background: var(--bg-secondary);
+        }
+
+        .question-number {
+            font-size: 12px;
+            font-weight: 700;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 8px;
+        }
+
+        .question-text {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 16px;
+        }
+
+        .question-category {
+            display: inline-block;
+            padding: 4px 12px;
+            background: var(--accent-light);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 12px;
+        }
+
+        /* Voice Builder */
+        .voice-examples {
+            padding: 20px;
+            background: var(--bg-secondary);
+            border: 2px solid var(--border-color);
+            border-radius: 8px;
+            margin-top: 16px;
+        }
+
+        .voice-example-label {
+            font-weight: 700;
+            font-size: 13px;
+            margin-bottom: 8px;
+            color: var(--text-secondary);
+        }
+
+        .voice-example-text {
+            font-style: italic;
+            padding: 12px;
+            background: var(--bg-primary);
+            border-left: 4px solid var(--accent-primary);
+            border-radius: 4px;
+        }
+
+        /* Tabs */
+        .tabs {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 24px;
+            border-bottom: 2px solid var(--border-color);
+            padding-bottom: 0;
+        }
+
+        .tab {
+            padding: 12px 24px;
+            background: none;
+            border: none;
+            border-bottom: 3px solid transparent;
+            cursor: pointer;
+            font-size: 15px;
+            font-weight: 600;
+            color: var(--text-muted);
+            transition: all 0.2s;
+            margin-bottom: -2px;
+        }
+
+        .tab:hover {
+            color: var(--text-primary);
+        }
+
+        .tab.active {
+            color: var(--text-primary);
+            border-bottom-color: var(--accent-primary);
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        /* Mobile Optimizations */
+        
+        /* Touch-friendly tap targets (minimum 44x44px) */
+        button, .btn, input[type="button"], input[type="submit"] {
+            min-height: 44px;
+        }
+        
+        /* Prevent text selection during touch interactions */
+        .character-node, .relationship-type-btn {
+            -webkit-user-select: none;
+            user-select: none;
+            -webkit-tap-highlight-color: transparent;
+        }
+        
+        /* Responsive breakpoints */
+        
+        /* Tablets and small laptops (768px - 1024px) */
+        @media (max-width: 1024px) {
+            .header {
+                padding: 16px 24px;
+            }
+            
+            .content {
+                padding: 24px;
+            }
+        }
+        
+        /* Mobile devices (max 768px) */
+        @media (max-width: 768px) {
+            .sidebar {
+                position: absolute;
+                left: 0;
+                top: 0;
+                bottom: 0;
+                z-index: 150;
+                width: 280px;
+            }
+
+            .content {
+                padding: 16px;
+            }
+
+            .dashboard-title {
+                font-size: 28px;
+            }
+
+            .form-section {
+                padding: 16px;
+            }
+
+            .header {
+                padding: 12px 16px;
+            }
+
+            .header-bottom {
+                flex-wrap: wrap;
+                gap: 12px;
+            }
+            
+            .header-bottom button {
+                font-size: 13px;
+                padding: 10px 14px;
+            }
+            
+            .story-name-group {
+                flex-direction: column;
+                align-items: stretch;
+                width: 100%;
+            }
+            
+            .story-name-input {
+                max-width: 100%;
+            }
+        }
+        
+        /* Small mobile devices (max 480px) */
+        @media (max-width: 480px) {
+            .header {
+                padding: 10px 12px;
+            }
+            
+            .logo {
+                font-size: 20px;
+            }
+            
+            .subtitle {
+                font-size: 10px;
+            }
+            
+            .header-bottom {
+                gap: 8px;
+            }
+            
+            .header-bottom .btn {
+                font-size: 11px;
+                padding: 8px 10px;
+                white-space: nowrap;
+            }
+            
+            .sidebar {
+                width: 260px;
+            }
+            
+            .content {
+                padding: 12px;
+            }
+            
+            .dashboard-title {
+                font-size: 24px;
+                margin-bottom: 16px;
+            }
+            
+            .dashboard-subtitle {
+                font-size: 14px;
+                margin-bottom: 24px;
+            }
+            
+            .stats-grid {
+                grid-template-columns: 1fr 1fr;
+                gap: 12px;
+            }
+            
+            .stat-card {
+                padding: 20px;
+            }
+            
+            .stat-number {
+                font-size: 36px;
+            }
+            
+            .stat-label {
+                font-size: 11px;
+            }
+            
+            .form-section {
+                padding: 12px;
+                margin-bottom: 16px;
+            }
+            
+            .section-title {
+                font-size: 18px;
+            }
+            
+            .section-icon {
+                font-size: 20px;
+            }
+            
+            .form-label {
+                font-size: 13px;
+                margin-bottom: 6px;
+            }
+            
+            .form-input, .form-select, .form-textarea {
+                font-size: 14px;
+                padding: 10px 12px;
+            }
+            
+            .btn {
+                font-size: 14px;
+                padding: 10px 14px;
+            }
+            
+            /* Relationship Map Mobile Optimizations */
+            .modal-content {
+                width: 95% !important;
+                height: 90vh !important;
+                padding: 12px !important;
+                margin: 5vh auto !important;
+            }
+            
+            .modal-content h2 {
+                font-size: 18px !important;
+                margin-bottom: 10px !important;
+            }
+            
+            #relationshipCanvas {
+                height: calc(100% - 100px) !important;
+            }
+            
+            .character-node {
+                min-width: 60px !important;
+                min-height: 60px !important;
+                font-size: 12px !important;
+                padding: 8px !important;
+            }
+            
+            .relationship-type-selector {
+                flex-wrap: wrap !important;
+                gap: 8px !important;
+                padding: 10px !important;
+                max-width: 100% !important;
+            }
+            
+            .relationship-type-btn {
+                flex: 1 1 calc(50% - 8px) !important;
+                min-width: 100px !important;
+                font-size: 12px !important;
+                padding: 10px 8px !important;
+            }
+            
+            .modal-buttons {
+                flex-wrap: wrap !important;
+                gap: 8px !important;
+            }
+            
+            .modal-buttons button {
+                flex: 1 !important;
+                min-width: 120px !important;
+            }
+        }
+        
+        /* Extra small devices (max 360px) */
+        @media (max-width: 360px) {
+            .logo {
+                font-size: 18px;
+            }
+            
+            .subtitle {
+                display: none;
+            }
+            
+            .header-bottom .btn {
+                font-size: 10px;
+                padding: 8px;
+            }
+            
+            .sidebar {
+                width: 240px;
+            }
+            
+            .content {
+                padding: 8px;
+            }
+            
+            .dashboard-title {
+                font-size: 20px;
+            }
+            
+            .dashboard-subtitle {
+                font-size: 13px;
+            }
+            
+            .stats-grid {
+                grid-template-columns: 1fr;
+                gap: 10px;
+            }
+            
+            .form-section {
+                padding: 10px;
+            }
+            
+            .section-title {
+                font-size: 16px;
+            }
+            
+            .character-node {
+                min-width: 50px !important;
+                min-height: 50px !important;
+                font-size: 11px !important;
+                padding: 6px !important;
+            }
+            
+            .relationship-type-btn {
+                flex: 1 1 100% !important;
+                font-size: 11px !important;
+            }
+        }
+
+        /* Scrollbar Styling */
+        ::-webkit-scrollbar {
+            width: 12px;
+            height: 12px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--bg-secondary);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--border-color);
+            border-radius: 6px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--text-muted);
+        }
+
+        /* Utility Classes */
+        .hidden {
+            display: none !important;
+        }
+
+        .text-center {
+            text-align: center;
+        }
+
+        .mt-4 {
+            margin-top: 16px;
+        }
+
+        .mb-4 {
+            margin-bottom: 16px;
+        }
+
+        /* Relationship Map Styles */
+        .character-node {
+            position: absolute;
+            padding: 10px 20px;
+            background: var(--primary-color);
+            color: white;
+            border-radius: 20px;
+            cursor: pointer;
+            user-select: none;
+            font-weight: 600;
+            font-size: 14px;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+            border: 2px solid transparent;
+            z-index: 2;
+        }
+
+        .character-node:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+        }
+
+        .character-node.selected {
+            border-color: #FFD700;
+            box-shadow: 0 0 20px rgba(255, 215, 0, 0.6);
+            animation: pulse 1.5s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                box-shadow: 0 0 20px rgba(255, 215, 0, 0.6);
+            }
+            50% {
+                box-shadow: 0 0 30px rgba(255, 215, 0, 0.9);
+            }
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateX(-50%) translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(-50%) translateY(0);
+            }
+        }
+
+        .relationship-line-svg {
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .relationship-line-svg:hover {
+            stroke-width: 6 !important;
+            filter: drop-shadow(0 0 12px currentColor) !important;
+        }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <!-- Header -->
+        <header class="header">
+            <div class="header-top">
+                <div class="logo-section">
+                    <button id="menuBtn" class="btn btn-icon" aria-label="Toggle sidebar">☰</button>
+                    <div>
+                        <h1 class="logo">Character Forge</h1>
+                        <p class="subtitle">Ultimate Character Development Toolkit</p>
+                    </div>
+                </div>
+                <div class="header-right">
+                    <span class="save-status" id="saveStatus">
+                        <span>✓</span>
+                        <span>All changes saved</span>
+                    </span>
+                    <button id="themeToggle" class="btn btn-icon" aria-label="Toggle dark mode">🌙</button>
+                </div>
+            </div>
+            <div class="header-bottom">
+                <div class="story-name-group">
+                    <label class="story-label" for="storyName">STORY:</label>
+                    <input 
+                        type="text" 
+                        id="storyName" 
+                        class="story-name-input" 
+                        placeholder="Enter your story name..."
+                        aria-label="Story name"
+                    >
+                </div>
+                <div class="header-right">
+                    <button id="viewMapBtn" class="btn">🗺️ Relationship Map</button>
+                    <button id="compareBtn" class="btn">⚖️ Compare</button>
+                    <button id="exportPDFBtn" class="btn">📄 Export PDF</button>
+                    <button id="exportBtn" class="btn">📤 Export JSON</button>
+                    <button id="importBtn" class="btn">📥 Import</button>
+                    <button id="addCharacterBtn" class="btn btn-primary">✚ New Character</button>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <!-- Sidebar -->
+            <aside class="sidebar" id="sidebar">
+                <div class="sidebar-header">
+                    <button id="sidebarAddBtn" class="btn btn-primary" style="width: 100%;">✚ New Character</button>
+                </div>
+                <div class="sidebar-content">
+                    <ul class="character-list" id="characterList"></ul>
+                </div>
+            </aside>
+
+            <!-- Content Area -->
+            <main class="content" id="content">
+                <div class="dashboard" id="dashboard">
+                    <h2 class="dashboard-title">Welcome to Character Forge</h2>
+                    <p class="dashboard-subtitle">Create, develop, and manage compelling characters for any genre</p>
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-number" id="totalCharacters">0</div>
+                            <div class="stat-label">Total Characters</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-number" id="protagonistCount">0</div>
+                            <div class="stat-label">Protagonists</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-number" id="antagonistCount">0</div>
+                            <div class="stat-label">Antagonists</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-number" id="supportingCount">0</div>
+                            <div class="stat-label">Supporting</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="character-form hidden" id="characterForm"></div>
+            </main>
+        </div>
+    </div>
+
+    <!-- Relationship Map Modal -->
+    <div class="modal" id="relationshipMapModal">
+        <div class="modal-content" style="width: 90vw; height: 90vh;">
+            <div class="modal-header">
+                <h3 class="modal-title">Character Relationship Map</h3>
+                <button class="modal-close" id="closeMapModal" aria-label="Close modal">×</button>
+            </div>
+            <div class="modal-body" style="position: relative; display: flex; flex-direction: column; gap: 16px;">
+                <div class="mapping-controls" style="display: flex; gap: 12px; justify-content: flex-start;">
+                    <button id="addRelationshipBtn" class="btn">+ Add Relationship</button>
+                    <button id="resetLayoutBtn" class="btn">Reset Layout</button>
+                </div>
+                <div id="relationshipCanvas" class="relationship-canvas" style="flex: 1; position: relative; border: 2px solid var(--border-color); border-radius: 8px; overflow: hidden; min-height: 600px;">
+                    <!-- Character nodes and relationship lines will be rendered here -->
+                </div>
+                <div class="relationship-legend" style="display: flex; flex-wrap: wrap; gap: 16px; padding: 12px; background: var(--bg-secondary); border-radius: 8px;">
+                    <div class="legend-item" style="display: flex; align-items: center; gap: 8px;">
+                        <div class="legend-color" style="width: 24px; height: 3px; background: #ff6b6b;"></div>
+                        <span style="font-size: 13px;">Family</span>
+                    </div>
+                    <div class="legend-item" style="display: flex; align-items: center; gap: 8px;">
+                        <div class="legend-color" style="width: 24px; height: 3px; background: #ff69b4;"></div>
+                        <span style="font-size: 13px;">Romantic</span>
+                    </div>
+                    <div class="legend-item" style="display: flex; align-items: center; gap: 8px;">
+                        <div class="legend-color" style="width: 24px; height: 3px; background: #4ecdc4;"></div>
+                        <span style="font-size: 13px;">Friendship</span>
+                    </div>
+                    <div class="legend-item" style="display: flex; align-items: center; gap: 8px;">
+                        <div class="legend-color" style="width: 24px; height: 3px; background: #45b7d1;"></div>
+                        <span style="font-size: 13px;">Professional</span>
+                    </div>
+                    <div class="legend-item" style="display: flex; align-items: center; gap: 8px;">
+                        <div class="legend-color" style="width: 24px; height: 3px; background: #cc0000;"></div>
+                        <span style="font-size: 13px;">Antagonistic</span>
+                    </div>
+                    <div class="legend-item" style="display: flex; align-items: center; gap: 8px;">
+                        <div class="legend-color" style="width: 24px; height: 3px; background: #6366f1;"></div>
+                        <span style="font-size: 13px;">Mentor</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Character Comparison Modal -->
+    <div class="modal" id="comparisonModal">
+        <div class="modal-content" style="width: 90vw; max-width: 1200px;">
+            <div class="modal-header">
+                <h3 class="modal-title">Character Comparison Matrix</h3>
+                <button class="modal-close" id="closeComparisonModal" aria-label="Close modal">×</button>
+            </div>
+            <div class="modal-body" id="comparisonContent"></div>
+        </div>
+    </div>
+
+    <!-- Character Interview Modal -->
+    <div class="modal" id="interviewModal">
+        <div class="modal-content" style="width: 90vw; max-width: 800px;">
+            <div class="modal-header">
+                <h3 class="modal-title">Character Interview</h3>
+                <button class="modal-close" id="closeInterviewModal" aria-label="Close modal">×</button>
+            </div>
+            <div class="modal-body" id="interviewContent"></div>
+        </div>
+    </div>
+
+    <script>
+        // Character Interview Questions Database
+        const interviewQuestions = {
+            basics: [
+                "What is your full name? Do you have any nicknames?",
+                "How old are you? When is your birthday?",
+                "Where were you born? Where did you grow up?",
+                "What is your occupation? How did you get into this line of work?",
+                "Describe your physical appearance in your own words."
+            ],
+            personality: [
+                "How would you describe your personality?",
+                "What are you most proud of about yourself?",
+                "What is your greatest flaw or weakness?",
+                "What makes you laugh out loud?",
+                "What makes you angry?",
+                "What are you afraid of?",
+                "Do you have any bad habits?",
+                "What do you do when you're stressed?",
+                "Are you an optimist or a pessimist?",
+                "Do you prefer to be alone or with others?"
+            ],
+            background: [
+                "Tell me about your childhood. What was it like growing up?",
+                "Who were the most important people in your early life?",
+                "What is your happiest memory?",
+                "What is your most painful memory?",
+                "What event in your past shaped who you are today?",
+                "Do you have any regrets?",
+                "What was your relationship with your parents like?",
+                "Did you have any siblings? What were they like?"
+            ],
+            relationships: [
+                "Who is the most important person in your life right now?",
+                "Do you have a best friend? What are they like?",
+                "Have you ever been in love?",
+                "Who do you trust the most?",
+                "Who do you trust the least?",
+                "Is there anyone you would die for?",
+                "Is there anyone you hate?",
+                "How do you show affection to people you care about?"
+            ],
+            beliefs: [
+                "What do you believe in?",
+                "What is your philosophy of life?",
+                "What are your political views?",
+                "Are you religious or spiritual?",
+                "What would you stand up and fight for?",
+                "What do you think happens after death?",
+                "What is the most important value to you?"
+            ],
+            daily_life: [
+                "What does a typical day look like for you?",
+                "What time do you wake up? Are you a morning person?",
+                "What's in your fridge right now?",
+                "What's in your pockets or bag?",
+                "What does your living space look like?",
+                "What do you do for fun?",
+                "What's your favorite meal?",
+                "What music do you listen to?",
+                "What do you read?",
+                "How do you dress? What's your style?"
+            ],
+            goals: [
+                "What do you want more than anything?",
+                "What are your goals for the future?",
+                "What's stopping you from achieving your dreams?",
+                "If you could change one thing about your life, what would it be?",
+                "Where do you see yourself in five years?",
+                "What would you do if you knew you couldn't fail?"
+            ],
+            secrets: [
+                "What's your biggest secret?",
+                "What are you ashamed of?",
+                "What do you hide from others?",
+                "What would people be surprised to learn about you?",
+                "What's the worst thing you've ever done?",
+                "What's your guilty pleasure?"
+            ],
+            voice: [
+                "Do you have any catchphrases or words you use a lot?",
+                "How would you describe the way you speak?",
+                "Do you have an accent?",
+                "Are you more formal or casual in conversation?",
+                "Do you curse? When?",
+                "How do you greet people?",
+                "How do you say goodbye?"
+            ]
+        };
+
+        // Application State
+        const state = {
+            characters: [],
+            currentCharacterId: null,
+            storyName: '',
+            darkMode: false
+        };
+        
+        // ============================================
+        // RELATIONSHIP MAP - REBUILT FROM SCRATCH
+        // ============================================
+        
+        let relationshipMapState = {
+            selectedCharacter: null,
+            selectedRelationshipType: null,
+            relationships: [],
+            characterPositions: {}
+        };
+        
+        const RELATIONSHIP_COLORS = {
+            family: '#ff6b6b',
+            romantic: '#ff69b4',
+            friendship: '#00CED1',
+            professional: '#4A90E2',
+            antagonistic: '#8B0000',
+            mentor: '#9370DB'
+        };
+        
+        const RELATIONSHIP_LABELS = {
+            family: 'Family',
+            romantic: 'Romantic',
+            friendship: 'Friendship',
+            professional: 'Professional',
+            antagonistic: 'Antagonistic',
+            mentor: 'Mentor'
+        };
+
+        // DOM Elements (initialized in init function)
+        let elements = {};
+
+        // Character Template
+        const createCharacter = () => ({
+            id: Date.now(),
+            name: 'New Character',
+            role: 'Protagonist',
+            genre: '',
+            age: '',
+            gender: '',
+            occupation: '',
+            image: null,
+            physicalDescription: '',
+            personality: '',
+            traits: [],
+            background: '',
+            motivations: '',
+            fears: '',
+            strengths: '',
+            weaknesses: '',
+            characterArc: '',
+            relationships: [],
+            pockets: '',
+            notes: '',
+            // NEW FIELDS
+            voice: {
+                greeting: '',
+                farewell: '',
+                catchphrases: [],
+                speechPattern: '',
+                vocabulary: '',
+                dialect: ''
+            },
+            dailyLife: {
+                routine: '',
+                favorites: {
+                    food: '',
+                    music: '',
+                    book: '',
+                    color: '',
+                    place: ''
+                },
+                hobbies: '',
+                livingSpace: ''
+            },
+            timeline: [],
+            secrets: '',
+            philosophy: '',
+            evolution: {
+                beginning: '',
+                transformation: '',
+                ending: ''
+            },
+            villainMotivation: '',
+            interviewAnswers: {}
+        });
+
+        // Initialize App
+        function init() {
+            console.log('init() called');
+            // Initialize DOM elements
+            elements = {
+                menuBtn: document.getElementById('menuBtn'),
+                sidebar: document.getElementById('sidebar'),
+                themeToggle: document.getElementById('themeToggle'),
+                storyName: document.getElementById('storyName'),
+                saveStatus: document.getElementById('saveStatus'),
+                characterList: document.getElementById('characterList'),
+                content: document.getElementById('content'),
+                dashboard: document.getElementById('dashboard'),
+                characterForm: document.getElementById('characterForm'),
+                addCharacterBtn: document.getElementById('addCharacterBtn'),
+                sidebarAddBtn: document.getElementById('sidebarAddBtn'),
+                exportBtn: document.getElementById('exportBtn'),
+                exportPDFBtn: document.getElementById('exportPDFBtn'),
+                importBtn: document.getElementById('importBtn'),
+                viewMapBtn: document.getElementById('viewMapBtn'),
+                compareBtn: document.getElementById('compareBtn'),
+                relationshipMapModal: document.getElementById('relationshipMapModal'),
+                closeMapModal: document.getElementById('closeMapModal'),
+                relationshipCanvas: document.getElementById('relationshipCanvas'),
+                addRelationshipBtn: document.getElementById('addRelationshipBtn'),
+                resetLayoutBtn: document.getElementById('resetLayoutBtn'),
+                comparisonModal: document.getElementById('comparisonModal'),
+                closeComparisonModal: document.getElementById('closeComparisonModal'),
+                comparisonContent: document.getElementById('comparisonContent'),
+                interviewModal: document.getElementById('interviewModal'),
+                closeInterviewModal: document.getElementById('closeInterviewModal'),
+                interviewContent: document.getElementById('interviewContent'),
+                totalCharacters: document.getElementById('totalCharacters'),
+                protagonistCount: document.getElementById('protagonistCount'),
+                antagonistCount: document.getElementById('antagonistCount'),
+                supportingCount: document.getElementById('supportingCount')
+            };
+            
+            console.log('Elements initialized:', Object.keys(elements).length);
+            
+            loadData();
+            console.log('loadData() complete');
+            
+            attachEventListeners();
+            console.log('attachEventListeners() complete');
+            
+            renderCharacterList();
+            updateStats();
+            showDashboard();
+            
+            console.log('init() complete');
+        }
+
+        // Load Data from localStorage
+        function loadData() {
+            const saved = localStorage.getItem('characterForge');
+            if (saved) {
+                const data = JSON.parse(saved);
+                state.characters = data.characters || [];
+                state.storyName = data.storyName || '';
+                state.darkMode = data.darkMode || false;
+                
+                elements.storyName.value = state.storyName;
+                
+                if (state.darkMode) {
+                    document.body.classList.add('dark-mode');
+                    elements.themeToggle.textContent = '☀️';
+                }
+            }
+        }
+
+        // Save Data to localStorage
+        function saveData() {
+            const data = {
+                characters: state.characters,
+                storyName: state.storyName,
+                darkMode: state.darkMode
+            };
+            localStorage.setItem('characterForge', JSON.stringify(data));
+            showSaveStatus();
+        }
+
+        // Show Save Status
+        function showSaveStatus() {
+            elements.saveStatus.innerHTML = '<span>💾</span><span>Saving...</span>';
+            setTimeout(() => {
+                elements.saveStatus.innerHTML = '<span>✓</span><span>All changes saved</span>';
+            }, 500);
+        }
+
+        // Attach Event Listeners
+        function attachEventListeners() {
+            elements.menuBtn.addEventListener('click', toggleSidebar);
+            elements.themeToggle.addEventListener('click', toggleTheme);
+            elements.storyName.addEventListener('input', handleStoryNameChange);
+            elements.addCharacterBtn.addEventListener('click', addCharacter);
+            elements.sidebarAddBtn.addEventListener('click', addCharacter);
+            elements.exportBtn.addEventListener('click', exportData);
+            elements.exportPDFBtn.addEventListener('click', exportPDF);
+            elements.importBtn.addEventListener('click', importData);
+            elements.viewMapBtn.addEventListener('click', openRelationshipMap);
+            elements.compareBtn.addEventListener('click', openComparison);
+            elements.closeMapModal.addEventListener('click', closeRelationshipMap);
+            elements.addRelationshipBtn.addEventListener('click', addRelationshipHandler);
+            elements.resetLayoutBtn.addEventListener('click', resetLayoutHandler);
+            elements.closeComparisonModal.addEventListener('click', () => {
+                elements.comparisonModal.classList.remove('active');
+            });
+            elements.closeInterviewModal.addEventListener('click', () => {
+                elements.interviewModal.classList.remove('active');
+            });
+            
+            // Close modals on outside click
+            elements.relationshipMapModal.addEventListener('click', (e) => {
+                if (e.target === elements.relationshipMapModal) closeRelationshipMap();
+            });
+            elements.comparisonModal.addEventListener('click', (e) => {
+                if (e.target === elements.comparisonModal) {
+                    elements.comparisonModal.classList.remove('active');
+                }
+            });
+            elements.interviewModal.addEventListener('click', (e) => {
+                if (e.target === elements.interviewModal) {
+                    elements.interviewModal.classList.remove('active');
+                }
+            });
+            
+            // Close modals on Escape key
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape') {
+                    closeRelationshipMap();
+                    elements.comparisonModal.classList.remove('active');
+                    elements.interviewModal.classList.remove('active');
+                }
+            });
+        }
+
+        // Toggle Sidebar
+        function toggleSidebar() {
+            elements.sidebar.classList.toggle('collapsed');
+        }
+
+        // Toggle Theme
+        function toggleTheme() {
+            state.darkMode = !state.darkMode;
+            document.body.classList.toggle('dark-mode');
+            elements.themeToggle.textContent = state.darkMode ? '☀️' : '🌙';
+            saveData();
+        }
+
+        // Handle Story Name Change
+        let storyNameTimeout;
+        function handleStoryNameChange(e) {
+            clearTimeout(storyNameTimeout);
+            storyNameTimeout = setTimeout(() => {
+                state.storyName = e.target.value;
+                saveData();
+            }, 500);
+        }
+
+        // Add Character
+        function addCharacter() {
+            const character = createCharacter();
+            state.characters.push(character);
+            state.currentCharacterId = character.id;
+            saveData();
+            renderCharacterList();
+            renderCharacterForm(character);
+            updateStats();
+        }
+
+        // Render Character List
+        function renderCharacterList() {
+            elements.characterList.innerHTML = '';
+            
+            state.characters.forEach(character => {
+                const li = document.createElement('li');
+                li.className = 'character-item';
+                if (character.id === state.currentCharacterId) {
+                    li.classList.add('active');
+                }
+                
+                const initial = character.name.charAt(0).toUpperCase();
+                
+                // Display image if available, otherwise show initial
+                const avatarContent = character.image 
+                    ? `<img src="${character.image}" alt="${character.name}" style="width: 100%; height: 100%; object-fit: cover; border-radius: 50%;" />`
+                    : initial;
+                
+                li.innerHTML = `
+                    <div class="character-avatar">${avatarContent}</div>
+                    <div class="character-info">
+                        <div class="character-name">${character.name}</div>
+                        <div class="character-role">${character.role}</div>
+                    </div>
+                `;
+                
+                li.addEventListener('click', () => {
+                    state.currentCharacterId = character.id;
+                    renderCharacterList();
+                    renderCharacterForm(character);
+                });
+                
+                elements.characterList.appendChild(li);
+            });
+        }
+
+        // Show Dashboard
+        function showDashboard() {
+            elements.dashboard.classList.remove('hidden');
+            elements.characterForm.classList.add('hidden');
+        }
+
+        // Update Stats
+        function updateStats() {
+            elements.totalCharacters.textContent = state.characters.length;
+            elements.protagonistCount.textContent = state.characters.filter(c => c.role === 'Protagonist').length;
+            elements.antagonistCount.textContent = state.characters.filter(c => c.role === 'Antagonist').length;
+            elements.supportingCount.textContent = state.characters.filter(c => c.role === 'Supporting').length;
+        }
+
+        // Render Character Form
+        function renderCharacterForm(character) {
+            elements.dashboard.classList.add('hidden');
+            elements.characterForm.classList.remove('hidden');
+            
+            const formId = `form-${character.id}`;
+            
+            elements.characterForm.innerHTML = `
+                <!-- Basic Information -->
+                <div class="form-section">
+                    <div class="section-header">
+                        <span class="section-icon">👤</span>
+                        <h3 class="section-title">Basic Information</h3>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="name-${character.id}">Character Name</label>
+                        <input type="text" id="name-${character.id}" class="form-input" placeholder="Enter character name" value="${character.name}">
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label" for="role-${character.id}">Role</label>
+                            <select id="role-${character.id}" class="form-select">
+                                <option value="Protagonist" ${character.role === 'Protagonist' ? 'selected' : ''}>Protagonist</option>
+                                <option value="Antagonist" ${character.role === 'Antagonist' ? 'selected' : ''}>Antagonist</option>
+                                <option value="Deuteragonist" ${character.role === 'Deuteragonist' ? 'selected' : ''}>Deuteragonist</option>
+                                <option value="Tritagonist" ${character.role === 'Tritagonist' ? 'selected' : ''}>Tritagonist</option>
+                                <option value="Supporting" ${character.role === 'Supporting' ? 'selected' : ''}>Supporting</option>
+                                <option value="Minor" ${character.role === 'Minor' ? 'selected' : ''}>Minor</option>
+                                <option value="Love Interest" ${character.role === 'Love Interest' ? 'selected' : ''}>Love Interest</option>
+                                <option value="Mentor" ${character.role === 'Mentor' ? 'selected' : ''}>Mentor</option>
+                                <option value="Sidekick" ${character.role === 'Sidekick' ? 'selected' : ''}>Sidekick</option>
+                                <option value="Comic Relief" ${character.role === 'Comic Relief' ? 'selected' : ''}>Comic Relief</option>
+                                <option value="Foil" ${character.role === 'Foil' ? 'selected' : ''}>Foil</option>
+                                <option value="Anti-Hero" ${character.role === 'Anti-Hero' ? 'selected' : ''}>Anti-Hero</option>
+                                <option value="Anti-Villain" ${character.role === 'Anti-Villain' ? 'selected' : ''}>Anti-Villain</option>
+                                <option value="Hero" ${character.role === 'Hero' ? 'selected' : ''}>Hero</option>
+                                <option value="Villain" ${character.role === 'Villain' ? 'selected' : ''}>Villain</option>
+                                <option value="Henchman" ${character.role === 'Henchman' ? 'selected' : ''}>Henchman</option>
+                                <option value="Guardian" ${character.role === 'Guardian' ? 'selected' : ''}>Guardian</option>
+                                <option value="Trickster" ${character.role === 'Trickster' ? 'selected' : ''}>Trickster</option>
+                                <option value="Sage" ${character.role === 'Sage' ? 'selected' : ''}>Sage</option>
+                                <option value="Innocent" ${character.role === 'Innocent' ? 'selected' : ''}>Innocent</option>
+                                <option value="Everyman" ${character.role === 'Everyman' ? 'selected' : ''}>Everyman</option>
+                                <option value="Jester" ${character.role === 'Jester' ? 'selected' : ''}>Jester</option>
+                                <option value="Lover" ${character.role === 'Lover' ? 'selected' : ''}>Lover</option>
+                                <option value="Rebel" ${character.role === 'Rebel' ? 'selected' : ''}>Rebel</option>
+                                <option value="Explorer" ${character.role === 'Explorer' ? 'selected' : ''}>Explorer</option>
+                                <option value="Creator" ${character.role === 'Creator' ? 'selected' : ''}>Creator</option>
+                                <option value="Ruler" ${character.role === 'Ruler' ? 'selected' : ''}>Ruler</option>
+                                <option value="Caregiver" ${character.role === 'Caregiver' ? 'selected' : ''}>Caregiver</option>
+                                <option value="Magician" ${character.role === 'Magician' ? 'selected' : ''}>Magician</option>
+                                <option value="Outlaw" ${character.role === 'Outlaw' ? 'selected' : ''}>Outlaw</option>
+                                <option value="Rival" ${character.role === 'Rival' ? 'selected' : ''}>Rival</option>
+                                <option value="Confidant" ${character.role === 'Confidant' ? 'selected' : ''}>Confidant</option>
+                                <option value="False Friend" ${character.role === 'False Friend' ? 'selected' : ''}>False Friend</option>
+                                <option value="Narrator" ${character.role === 'Narrator' ? 'selected' : ''}>Narrator</option>
+                                <option value="Catalyst" ${character.role === 'Catalyst' ? 'selected' : ''}>Catalyst</option>
+                                <option value="Tempter" ${character.role === 'Tempter' ? 'selected' : ''}>Tempter</option>
+                                <option value="Skeptic" ${character.role === 'Skeptic' ? 'selected' : ''}>Skeptic</option>
+                                <option value="Contagonist" ${character.role === 'Contagonist' ? 'selected' : ''}>Contagonist</option>
+                                <option value="Guardian Angel" ${character.role === 'Guardian Angel' ? 'selected' : ''}>Guardian Angel</option>
+                                <option value="Damsel in Distress" ${character.role === 'Damsel in Distress' ? 'selected' : ''}>Damsel in Distress</option>
+                                <option value="Femme Fatale" ${character.role === 'Femme Fatale' ? 'selected' : ''}>Femme Fatale</option>
+                                <option value="Byronic Hero" ${character.role === 'Byronic Hero' ? 'selected' : ''}>Byronic Hero</option>
+                                <option value="Tragic Hero" ${character.role === 'Tragic Hero' ? 'selected' : ''}>Tragic Hero</option>
+                                <option value="Scapegoat" ${character.role === 'Scapegoat' ? 'selected' : ''}>Scapegoat</option>
+                                <option value="Shapeshifter" ${character.role === 'Shapeshifter' ? 'selected' : ''}>Shapeshifter</option>
+                                <option value="Herald" ${character.role === 'Herald' ? 'selected' : ''}>Herald</option>
+                                <option value="Shadow" ${character.role === 'Shadow' ? 'selected' : ''}>Shadow</option>
+                                <option value="Threshold Guardian" ${character.role === 'Threshold Guardian' ? 'selected' : ''}>Threshold Guardian</option>
+                                <option value="Symbolic" ${character.role === 'Symbolic' ? 'selected' : ''}>Symbolic</option>
+                                <option value="Cameo" ${character.role === 'Cameo' ? 'selected' : ''}>Cameo</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="genre-${character.id}">Genre</label>
+                            <select id="genre-${character.id}" class="form-input">
+                                <option value="" ${character.genre === '' ? 'selected' : ''}>Select a genre...</option>
+                                <option value="Fantasy" ${character.genre === 'Fantasy' ? 'selected' : ''}>Fantasy</option>
+                                <option value="Science Fiction" ${character.genre === 'Science Fiction' ? 'selected' : ''}>Science Fiction</option>
+                                <option value="Mystery" ${character.genre === 'Mystery' ? 'selected' : ''}>Mystery</option>
+                                <option value="Thriller" ${character.genre === 'Thriller' ? 'selected' : ''}>Thriller</option>
+                                <option value="Horror" ${character.genre === 'Horror' ? 'selected' : ''}>Horror</option>
+                                <option value="Romance" ${character.genre === 'Romance' ? 'selected' : ''}>Romance</option>
+                                <option value="Historical Fiction" ${character.genre === 'Historical Fiction' ? 'selected' : ''}>Historical Fiction</option>
+                                <option value="Literary Fiction" ${character.genre === 'Literary Fiction' ? 'selected' : ''}>Literary Fiction</option>
+                                <option value="Contemporary Fiction" ${character.genre === 'Contemporary Fiction' ? 'selected' : ''}>Contemporary Fiction</option>
+                                <option value="Dystopian" ${character.genre === 'Dystopian' ? 'selected' : ''}>Dystopian</option>
+                                <option value="Urban Fantasy" ${character.genre === 'Urban Fantasy' ? 'selected' : ''}>Urban Fantasy</option>
+                                <option value="Paranormal" ${character.genre === 'Paranormal' ? 'selected' : ''}>Paranormal</option>
+                                <option value="Adventure" ${character.genre === 'Adventure' ? 'selected' : ''}>Adventure</option>
+                                <option value="Action" ${character.genre === 'Action' ? 'selected' : ''}>Action</option>
+                                <option value="Crime" ${character.genre === 'Crime' ? 'selected' : ''}>Crime</option>
+                                <option value="Detective" ${character.genre === 'Detective' ? 'selected' : ''}>Detective</option>
+                                <option value="Noir" ${character.genre === 'Noir' ? 'selected' : ''}>Noir</option>
+                                <option value="Western" ${character.genre === 'Western' ? 'selected' : ''}>Western</option>
+                                <option value="Comedy" ${character.genre === 'Comedy' ? 'selected' : ''}>Comedy</option>
+                                <option value="Drama" ${character.genre === 'Drama' ? 'selected' : ''}>Drama</option>
+                                <option value="Tragedy" ${character.genre === 'Tragedy' ? 'selected' : ''}>Tragedy</option>
+                                <option value="Satire" ${character.genre === 'Satire' ? 'selected' : ''}>Satire</option>
+                                <option value="Young Adult" ${character.genre === 'Young Adult' ? 'selected' : ''}>Young Adult</option>
+                                <option value="Middle Grade" ${character.genre === 'Middle Grade' ? 'selected' : ''}>Middle Grade</option>
+                                <option value="Children's" ${character.genre === "Children's" ? 'selected' : ''}>Children's</option>
+                                <option value="New Adult" ${character.genre === 'New Adult' ? 'selected' : ''}>New Adult</option>
+                                <option value="Steampunk" ${character.genre === 'Steampunk' ? 'selected' : ''}>Steampunk</option>
+                                <option value="Cyberpunk" ${character.genre === 'Cyberpunk' ? 'selected' : ''}>Cyberpunk</option>
+                                <option value="Space Opera" ${character.genre === 'Space Opera' ? 'selected' : ''}>Space Opera</option>
+                                <option value="Military Sci-Fi" ${character.genre === 'Military Sci-Fi' ? 'selected' : ''}>Military Sci-Fi</option>
+                                <option value="Post-Apocalyptic" ${character.genre === 'Post-Apocalyptic' ? 'selected' : ''}>Post-Apocalyptic</option>
+                                <option value="Superhero" ${character.genre === 'Superhero' ? 'selected' : ''}>Superhero</option>
+                                <option value="Magical Realism" ${character.genre === 'Magical Realism' ? 'selected' : ''}>Magical Realism</option>
+                                <option value="Gothic" ${character.genre === 'Gothic' ? 'selected' : ''}>Gothic</option>
+                                <option value="Epic Fantasy" ${character.genre === 'Epic Fantasy' ? 'selected' : ''}>Epic Fantasy</option>
+                                <option value="Dark Fantasy" ${character.genre === 'Dark Fantasy' ? 'selected' : ''}>Dark Fantasy</option>
+                                <option value="Sword and Sorcery" ${character.genre === 'Sword and Sorcery' ? 'selected' : ''}>Sword and Sorcery</option>
+                                <option value="High Fantasy" ${character.genre === 'High Fantasy' ? 'selected' : ''}>High Fantasy</option>
+                                <option value="Low Fantasy" ${character.genre === 'Low Fantasy' ? 'selected' : ''}>Low Fantasy</option>
+                                <option value="Cozy Mystery" ${character.genre === 'Cozy Mystery' ? 'selected' : ''}>Cozy Mystery</option>
+                                <option value="Psychological Thriller" ${character.genre === 'Psychological Thriller' ? 'selected' : ''}>Psychological Thriller</option>
+                                <option value="Legal Thriller" ${character.genre === 'Legal Thriller' ? 'selected' : ''}>Legal Thriller</option>
+                                <option value="Medical Thriller" ${character.genre === 'Medical Thriller' ? 'selected' : ''}>Medical Thriller</option>
+                                <option value="Spy Thriller" ${character.genre === 'Spy Thriller' ? 'selected' : ''}>Spy Thriller</option>
+                                <option value="Romantic Comedy" ${character.genre === 'Romantic Comedy' ? 'selected' : ''}>Romantic Comedy</option>
+                                <option value="Romantic Suspense" ${character.genre === 'Romantic Suspense' ? 'selected' : ''}>Romantic Suspense</option>
+                                <option value="Historical Romance" ${character.genre === 'Historical Romance' ? 'selected' : ''}>Historical Romance</option>
+                                <option value="Paranormal Romance" ${character.genre === 'Paranormal Romance' ? 'selected' : ''}>Paranormal Romance</option>
+                                <option value="Erotic Romance" ${character.genre === 'Erotic Romance' ? 'selected' : ''}>Erotic Romance</option>
+                                <option value="Coming of Age" ${character.genre === 'Coming of Age' ? 'selected' : ''}>Coming of Age</option>
+                                <option value="Slice of Life" ${character.genre === 'Slice of Life' ? 'selected' : ''}>Slice of Life</option>
+                                <option value="Biographical" ${character.genre === 'Biographical' ? 'selected' : ''}>Biographical</option>
+                                <option value="Memoir" ${character.genre === 'Memoir' ? 'selected' : ''}>Memoir</option>
+                                <option value="True Crime" ${character.genre === 'True Crime' ? 'selected' : ''}>True Crime</option>
+                                <option value="Biography" ${character.genre === 'Biography' ? 'selected' : ''}>Biography</option>
+                                <option value="Autobiography" ${character.genre === 'Autobiography' ? 'selected' : ''}>Autobiography</option>
+                                <option value="Self-Help" ${character.genre === 'Self-Help' ? 'selected' : ''}>Self-Help</option>
+                                <option value="Business" ${character.genre === 'Business' ? 'selected' : ''}>Business</option>
+                                <option value="Philosophy" ${character.genre === 'Philosophy' ? 'selected' : ''}>Philosophy</option>
+                                <option value="Religion" ${character.genre === 'Religion' ? 'selected' : ''}>Religion</option>
+                                <option value="Spirituality" ${character.genre === 'Spirituality' ? 'selected' : ''}>Spirituality</option>
+                                <option value="Other" ${character.genre === 'Other' ? 'selected' : ''}>Other</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label" for="age-${character.id}">Age</label>
+                            <input type="text" id="age-${character.id}" class="form-input" placeholder="e.g., 25 or Early 20s" value="${character.age}">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="gender-${character.id}">Gender</label>
+                            <input type="text" id="gender-${character.id}" class="form-input" placeholder="e.g., Male, Female, Non-binary" value="${character.gender}">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="occupation-${character.id}">Occupation</label>
+                            <input type="text" id="occupation-${character.id}" class="form-input" placeholder="What does this character do?" value="${character.occupation}">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Character Image -->
+                <div class="form-section">
+                    <div class="section-header">
+                        <span class="section-icon">🖼️</span>
+                        <h3 class="section-title">Character Image</h3>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Upload Image</label>
+                        <button class="btn" id="uploadImage-${character.id}">📤 Upload Image</button>
+                        <input type="file" id="imageInput-${character.id}" accept="image/*" style="display: none;">
+                        <div class="image-preview-container" id="imagePreview-${character.id}">
+                            ${character.image ? `<img src="${character.image}" alt="${character.name}" class="image-preview">` : '<div class="image-placeholder"><div class="image-placeholder-icon">🖼️</div><div>No image uploaded</div></div>'}
+                        </div>
+                        <p class="form-hint">Upload a portrait or reference image for this character</p>
+                    </div>
+                </div>
+
+                <!-- Physical Description -->
+                <div class="form-section">
+                    <div class="section-header">
+                        <span class="section-icon">👁️</span>
+                        <h3 class="section-title">Physical Description</h3>
+                    </div>
+                    <div class="form-group">
+                        <textarea id="physicalDescription-${character.id}" class="form-textarea" placeholder="Describe the character's physical appearance, including height, build, hair, eyes, distinguishing features, style of dress, and mannerisms">${character.physicalDescription}</textarea>
+                        <p class="form-hint">Include height, build, hair, eyes, distinguishing features, style of dress, and mannerisms</p>
+                    </div>
+                </div>
+
+                <!-- Personality & Traits -->
+                <div class="form-section">
+                    <div class="section-header">
+                        <span class="section-icon">🎭</span>
+                        <h3 class="section-title">Personality & Traits</h3>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Personality Description</label>
+                        <textarea id="personality-${character.id}" class="form-textarea" placeholder="Describe the character's personality, temperament, and behavioral patterns">${character.personality}</textarea>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Character Traits</label>
+                        <input type="text" id="traitInput-${character.id}" class="form-input" placeholder="Add traits (press Enter)" aria-label="Add character trait">
+                        <div class="traits-container" id="traitsContainer-${character.id}">
+                            ${character.traits.map(trait => `<span class="trait-tag">${trait} <span class="trait-remove" data-trait="${trait}">×</span></span>`).join('')}
+                        </div>
+                        <p class="form-hint">Add individual traits like "Brave", "Cunning", "Compassionate", etc.</p>
+                    </div>
+                </div>
+
+                <!-- Background & History -->
+                <div class="form-section">
+                    <div class="section-header">
+                        <span class="section-icon">📖</span>
+                        <h3 class="section-title">Background & History</h3>
+                    </div>
+                    <div class="form-group">
+                        <textarea id="background-${character.id}" class="form-textarea" placeholder="What shaped this character? Include their upbringing, significant life events, and formative experiences">${character.background}</textarea>
+                        <p class="form-hint">Include upbringing, significant life events, and formative experiences</p>
+                    </div>
+                </div>
+
+                <!-- Motivations & Goals -->
+                <div class="form-section">
+                    <div class="section-header">
+                        <span class="section-icon">🎯</span>
+                        <h3 class="section-title">Motivations & Goals</h3>
+                    </div>
+                    <div class="form-group">
+                        <textarea id="motivations-${character.id}" class="form-textarea" placeholder="What drives this character? What do they want most? What are their goals and desires?">${character.motivations}</textarea>
+                        <p class="form-hint">What drives them? What do they want most?</p>
+                    </div>
+                </div>
+
+                <!-- Fears & Obstacles -->
+                <div class="form-section">
+                    <div class="section-header">
+                        <span class="section-icon">⚠️</span>
+                        <h3 class="section-title">Fears & Obstacles</h3>
+                    </div>
+                    <div class="form-group">
+                        <textarea id="fears-${character.id}" class="form-textarea" placeholder="What does this character fear? What internal or external obstacles stand in their way?">${character.fears}</textarea>
+                        <p class="form-hint">What internal or external obstacles stand in their way?</p>
+                    </div>
+                </div>
+
+                <!-- Strengths & Weaknesses -->
+                <div class="form-section">
+                    <div class="section-header">
+                        <span class="section-icon">⚖️</span>
+                        <h3 class="section-title">Strengths & Weaknesses</h3>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Strengths</label>
+                        <textarea id="strengths-${character.id}" class="form-textarea" placeholder="What is this character good at? What are their skills, talents, and positive qualities?">${character.strengths}</textarea>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Weaknesses</label>
+                        <textarea id="weaknesses-${character.id}" class="form-textarea" placeholder="What are this character's flaws, limitations, and vulnerabilities?">${character.weaknesses}</textarea>
+                    </div>
+                </div>
+
+                <!-- Character Arc -->
+                <div class="form-section">
+                    <div class="section-header">
+                        <span class="section-icon">📈</span>
+                        <h3 class="section-title">Character Arc</h3>
+                    </div>
+                    <div class="form-group">
+                        <textarea id="characterArc-${character.id}" class="form-textarea" placeholder="How does this character change throughout the story? What lessons do they learn? How do they grow?">${character.characterArc}</textarea>
+                        <p class="form-hint">Describe their transformation from beginning to end</p>
+                    </div>
+                </div>
+
+                <!-- NEW: Character Evolution Tracker -->
+                <div class="form-section">
+                    <div class="section-header">
+                        <span class="section-icon">🔄</span>
+                        <h3 class="section-title">Character Evolution</h3>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Beginning State</label>
+                        <textarea id="evolutionBeginning-${character.id}" class="form-textarea" placeholder="Who is this character at the start of the story? What are their beliefs, skills, and emotional state?">${character.evolution.beginning}</textarea>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Transformation</label>
+                        <textarea id="evolutionTransformation-${character.id}" class="form-textarea" placeholder="What events or realizations cause them to change? What is the turning point?">${character.evolution.transformation}</textarea>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Ending State</label>
+                        <textarea id="evolutionEnding-${character.id}" class="form-textarea" placeholder="Who has this character become by the end? How are they different?">${character.evolution.ending}</textarea>
+                    </div>
+                </div>
+
+                <!-- NEW: Character Voice Builder -->
+                <div class="form-section">
+                    <div class="section-header">
+                        <span class="section-icon">🗣️</span>
+                        <h3 class="section-title">Character Voice</h3>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label" for="voiceGreeting-${character.id}">How They Greet</label>
+                            <input type="text" id="voiceGreeting-${character.id}" class="form-input" placeholder='e.g., "Hey there!" or "Good day"' value="${character.voice.greeting}">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="voiceFarewell-${character.id}">How They Say Goodbye</label>
+                            <input type="text" id="voiceFarewell-${character.id}" class="form-input" placeholder='e.g., "See ya!" or "Farewell"' value="${character.voice.farewell}">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="voiceSpeechPattern-${character.id}">Speech Pattern</label>
+                        <textarea id="voiceSpeechPattern-${character.id}" class="form-textarea" placeholder="Describe how they speak: formal/casual, verbose/terse, sentence structure, pauses, filler words">${character.voice.speechPattern}</textarea>
+                        <p class="form-hint">e.g., "Speaks in short, clipped sentences. Avoids contractions. Pauses before answering questions."</p>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="voiceVocabulary-${character.id}">Vocabulary & Word Choice</label>
+                        <textarea id="voiceVocabulary-${character.id}" class="form-textarea" placeholder="What kind of words do they use? Technical jargon? Slang? Big words? Simple language?">${character.voice.vocabulary}</textarea>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="voiceDialect-${character.id}">Accent/Dialect</label>
+                        <input type="text" id="voiceDialect-${character.id}" class="form-input" placeholder='e.g., "Southern drawl", "British RP", "Brooklyn accent"' value="${character.voice.dialect}">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Catchphrases</label>
+                        <input type="text" id="voiceCatchphraseInput-${character.id}" class="form-input" placeholder="Add catchphrases (press Enter)">
+                        <div class="traits-container" id="catchphrasesContainer-${character.id}">
+                            ${character.voice.catchphrases.map(phrase => `<span class="trait-tag">${phrase} <span class="trait-remove" data-catchphrase="${phrase}">×</span></span>`).join('')}
+                        </div>
+                        <p class="form-hint">Repeated phrases or expressions this character uses</p>
+                    </div>
+                </div>
+
+                <!-- NEW: Daily Life & Favorites -->
+                <div class="form-section">
+                    <div class="section-header">
+                        <span class="section-icon">☕</span>
+                        <h3 class="section-title">Daily Life & Favorites</h3>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="dailyRoutine-${character.id}">Daily Routine</label>
+                        <textarea id="dailyRoutine-${character.id}" class="form-textarea" placeholder="What does a typical day look like? When do they wake up? What do they do?">${character.dailyLife.routine}</textarea>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="livingSpace-${character.id}">Living Space</label>
+                        <textarea id="livingSpace-${character.id}" class="form-textarea" placeholder="Describe their home, bedroom, or living space. What does it look like? What's in it?">${character.dailyLife.livingSpace}</textarea>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="hobbies-${character.id}">Hobbies & Interests</label>
+                        <textarea id="hobbies-${character.id}" class="form-textarea" placeholder="What do they do for fun? What are they passionate about?">${character.dailyLife.hobbies}</textarea>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Favorites</label>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label class="form-label" for="favFood-${character.id}">Food</label>
+                                <input type="text" id="favFood-${character.id}" class="form-input" placeholder="Favorite food" value="${character.dailyLife.favorites.food}">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label" for="favMusic-${character.id}">Music</label>
+                                <input type="text" id="favMusic-${character.id}" class="form-input" placeholder="Favorite music" value="${character.dailyLife.favorites.music}">
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label class="form-label" for="favBook-${character.id}">Book/Movie</label>
+                                <input type="text" id="favBook-${character.id}" class="form-input" placeholder="Favorite book or movie" value="${character.dailyLife.favorites.book}">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label" for="favColor-${character.id}">Color</label>
+                                <input type="text" id="favColor-${character.id}" class="form-input" placeholder="Favorite color" value="${character.dailyLife.favorites.color}">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="favPlace-${character.id}">Place</label>
+                            <input type="text" id="favPlace-${character.id}" class="form-input" placeholder="Favorite place" value="${character.dailyLife.favorites.place}">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- NEW: Character Timeline -->
+                <div class="form-section">
+                    <div class="section-header">
+                        <span class="section-icon">⏳</span>
+                        <h3 class="section-title">Character Timeline</h3>
+                    </div>
+                    <div class="form-group">
+                        <button class="btn" id="addTimelineEvent-${character.id}">➕ Add Life Event</button>
+                        <div class="timeline-container" id="timelineContainer-${character.id}" style="margin-top: 20px;">
+                            <div class="timeline-line"></div>
+                            ${character.timeline.map((event, index) => `
+                                <div class="timeline-item">
+                                    <div class="timeline-date">${event.date || 'Date'}</div>
+                                    <div class="timeline-event">${event.event || 'Event description'}</div>
+                                    <button class="btn btn-remove" data-timeline-index="${index}" style="margin-top: 8px;">Remove</button>
+                                </div>
+                            `).join('')}
+                        </div>
+                        <p class="form-hint">Track major life events from birth to the present moment in your story</p>
+                    </div>
+                </div>
+
+                <!-- NEW: Secrets & Philosophy -->
+                <div class="form-section">
+                    <div class="section-header">
+                        <span class="section-icon">🔒</span>
+                        <h3 class="section-title">Secrets & Philosophy</h3>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="secrets-${character.id}">Secrets</label>
+                        <textarea id="secrets-${character.id}" class="form-textarea" placeholder="What is this character hiding? What don't they want others to know?">${character.secrets}</textarea>
+                        <p class="form-hint">What they're ashamed of, guilty about, or deliberately concealing</p>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="philosophy-${character.id}">Philosophy & Worldview</label>
+                        <textarea id="philosophy-${character.id}" class="form-textarea" placeholder="What is their philosophy of life? What do they believe in? What are their values and principles?">${character.philosophy}</textarea>
+                        <p class="form-hint">Their beliefs, values, political views, and how they see the world</p>
+                    </div>
+                </div>
+
+                <!-- NEW: Villain Motivation (shown for Antagonist/Villain roles) -->
+                ${['Antagonist', 'Villain', 'Anti-Villain'].includes(character.role) ? `
+                <div class="form-section">
+                    <div class="section-header">
+                        <span class="section-icon">😈</span>
+                        <h3 class="section-title">Villain Motivation</h3>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="villainMotivation-${character.id}">Why Are They Doing This?</label>
+                        <textarea id="villainMotivation-${character.id}" class="form-textarea" placeholder="What is driving this character to be the antagonist? What do they believe they're accomplishing? Why do they think they're right?">${character.villainMotivation}</textarea>
+                        <p class="form-hint">The motivation must be strong, smart, and believable enough to carry the entire story</p>
+                    </div>
+                </div>
+                ` : ''}
+
+                <!-- Relationships -->
+                <div class="form-section">
+                    <div class="section-header">
+                        <span class="section-icon">💞</span>
+                        <h3 class="section-title">Relationships</h3>
+                    </div>
+                    <div id="relationshipsContainer-${character.id}">
+                        ${character.relationships.map((rel, index) => `
+                            <div class="relationship-item">
+                                <div class="relationship-header">
+                                    <span style="font-weight: 600;">Relationship ${index + 1}</span>
+                                    <button class="btn btn-remove" data-rel-index="${index}" aria-label="Remove relationship">Remove</button>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Character Name</label>
+                                    <input type="text" class="form-input rel-name" placeholder="Name" value="${rel.name || ''}" data-rel-index="${index}">
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Relationship Type</label>
+                                    <input type="text" class="form-input rel-type" placeholder="e.g., Friend, Enemy, Mentor" value="${rel.type || ''}" data-rel-index="${index}">
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Description</label>
+                                    <textarea class="form-textarea rel-description" placeholder="Describe the relationship dynamics" data-rel-index="${index}">${rel.description || ''}</textarea>
+                                </div>
+                            </div>
+                        `).join('')}
+                    </div>
+                    <button class="btn" id="addRelationship-${character.id}">✚ Add Relationship</button>
+                    <button class="btn" id="viewCharacterMap-${character.id}" style="margin-left: 8px;">🗺️ View Relationship Map</button>
+                </div>
+
+                <!-- What's in Their Pockets -->
+                <div class="form-section">
+                    <div class="section-header">
+                        <span class="section-icon">👜</span>
+                        <h3 class="section-title">What's in Their Pockets</h3>
+                    </div>
+                    <div class="form-group">
+                        <textarea id="pockets-${character.id}" class="form-textarea" placeholder="What does this character carry with them? Keys, wallet, lucky charm, weapon, phone, photos, etc.">${character.pockets}</textarea>
+                        <p class="form-hint">What a character carries reveals their priorities, profession, and personality</p>
+                    </div>
+                </div>
+
+                <!-- Character Interview -->
+                <div class="form-section">
+                    <div class="section-header">
+                        <span class="section-icon">🎤</span>
+                        <h3 class="section-title">Character Interview</h3>
+                    </div>
+                    <div class="form-group">
+                        <p style="margin-bottom: 16px; color: var(--text-secondary);">Answer questions as if you're interviewing your character. This helps develop their unique voice and reveals details you might not have considered.</p>
+                        <button class="btn btn-primary" id="startInterview-${character.id}">🎤 Start Interview</button>
+                    </div>
+                </div>
+
+                <!-- Additional Notes -->
+                <div class="form-section">
+                    <div class="section-header">
+                        <span class="section-icon">📝</span>
+                        <h3 class="section-title">Additional Notes</h3>
+                    </div>
+                    <div class="form-group">
+                        <textarea id="notes-${character.id}" class="form-textarea" placeholder="Any additional notes, ideas, or reminders about this character">${character.notes}</textarea>
+                    </div>
+                </div>
+
+                <!-- Delete Character -->
+                <div class="form-section">
+                    <button class="btn btn-remove" id="deleteCharacter-${character.id}">🗑️ Delete Character</button>
+                </div>
+            `;
+            
+            // Attach form event listeners
+            attachFormListeners(character);
+        }
+
+        // Attach Form Listeners
+        function attachFormListeners(character) {
+            const id = character.id;
+            
+            // Basic fields
+            ['name', 'role', 'genre', 'age', 'gender', 'occupation', 'physicalDescription', 'personality', 'background', 'motivations', 'fears', 'strengths', 'weaknesses', 'characterArc', 'pockets', 'notes'].forEach(field => {
+                const element = document.getElementById(`${field}-${id}`);
+                if (element) {
+                    element.addEventListener('input', (e) => {
+                        character[field] = e.target.value;
+                        saveData();
+                        if (field === 'name' || field === 'role') {
+                            renderCharacterList();
+                            updateStats();
+                        }
+                    });
+                }
+            });
+
+            // NEW: Evolution fields
+            ['evolutionBeginning', 'evolutionTransformation', 'evolutionEnding'].forEach(field => {
+                const element = document.getElementById(`${field}-${id}`);
+                if (element) {
+                    const key = field.replace('evolution', '').toLowerCase();
+                    element.addEventListener('input', (e) => {
+                        character.evolution[key] = e.target.value;
+                        saveData();
+                    });
+                }
+            });
+
+            // NEW: Voice fields
+            const voiceFields = {
+                'voiceGreeting': 'greeting',
+                'voiceFarewell': 'farewell',
+                'voiceSpeechPattern': 'speechPattern',
+                'voiceVocabulary': 'vocabulary',
+                'voiceDialect': 'dialect'
+            };
+            
+            Object.entries(voiceFields).forEach(([elementId, key]) => {
+                const element = document.getElementById(`${elementId}-${id}`);
+                if (element) {
+                    element.addEventListener('input', (e) => {
+                        character.voice[key] = e.target.value;
+                        saveData();
+                    });
+                }
+            });
+
+            // NEW: Catchphrases
+            const catchphraseInput = document.getElementById(`voiceCatchphraseInput-${id}`);
+            if (catchphraseInput) {
+                catchphraseInput.addEventListener('keypress', (e) => {
+                    if (e.key === 'Enter' && e.target.value.trim()) {
+                        character.voice.catchphrases.push(e.target.value.trim());
+                        e.target.value = '';
+                        saveData();
+                        renderCharacterForm(character);
+                    }
+                });
+            }
+
+            // Remove catchphrase
+            document.querySelectorAll(`[data-catchphrase]`).forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    const phrase = e.target.dataset.catchphrase;
+                    character.voice.catchphrases = character.voice.catchphrases.filter(p => p !== phrase);
+                    saveData();
+                    renderCharacterForm(character);
+                });
+            });
+
+            // NEW: Daily Life fields
+            const dailyLifeFields = {
+                'dailyRoutine': 'routine',
+                'livingSpace': 'livingSpace',
+                'hobbies': 'hobbies'
+            };
+            
+            Object.entries(dailyLifeFields).forEach(([elementId, key]) => {
+                const element = document.getElementById(`${elementId}-${id}`);
+                if (element) {
+                    element.addEventListener('input', (e) => {
+                        character.dailyLife[key] = e.target.value;
+                        saveData();
+                    });
+                }
+            });
+
+            // NEW: Favorites
+            ['favFood', 'favMusic', 'favBook', 'favColor', 'favPlace'].forEach(field => {
+                const element = document.getElementById(`${field}-${id}`);
+                if (element) {
+                    const key = field.replace('fav', '').toLowerCase();
+                    element.addEventListener('input', (e) => {
+                        character.dailyLife.favorites[key] = e.target.value;
+                        saveData();
+                    });
+                }
+            });
+
+            // NEW: Secrets and Philosophy
+            ['secrets', 'philosophy', 'villainMotivation'].forEach(field => {
+                const element = document.getElementById(`${field}-${id}`);
+                if (element) {
+                    element.addEventListener('input', (e) => {
+                        character[field] = e.target.value;
+                        saveData();
+                    });
+                }
+            });
+
+            // Traits
+            const traitInput = document.getElementById(`traitInput-${id}`);
+            if (traitInput) {
+                traitInput.addEventListener('keypress', (e) => {
+                    if (e.key === 'Enter' && e.target.value.trim()) {
+                        character.traits.push(e.target.value.trim());
+                        e.target.value = '';
+                        saveData();
+                        renderCharacterForm(character);
+                    }
+                });
+            }
+
+            // Remove trait
+            document.querySelectorAll(`[data-trait]`).forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    const trait = e.target.dataset.trait;
+                    character.traits = character.traits.filter(t => t !== trait);
+                    saveData();
+                    renderCharacterForm(character);
+                });
+            });
+
+            // Image upload
+            const uploadBtn = document.getElementById(`uploadImage-${id}`);
+            const imageInput = document.getElementById(`imageInput-${id}`);
+            
+            if (uploadBtn && imageInput) {
+                uploadBtn.addEventListener('click', () => imageInput.click());
+                
+                imageInput.addEventListener('change', (e) => {
+                    const file = e.target.files[0];
+                    if (file) {
+                        const reader = new FileReader();
+                        reader.onload = (event) => {
+                            character.image = event.target.result;
+                            saveData();
+                            renderCharacterForm(character);
+                        };
+                        reader.readAsDataURL(file);
+                    }
+                });
+            }
+
+            // Relationships
+            const addRelBtn = document.getElementById(`addRelationship-${id}`);
+            if (addRelBtn) {
+                addRelBtn.addEventListener('click', () => {
+                    character.relationships.push({ name: '', type: '', description: '' });
+                    saveData();
+                    renderCharacterForm(character);
+                });
+            }
+
+            // Remove relationship
+            document.querySelectorAll(`[data-rel-index]`).forEach(btn => {
+                if (btn.classList.contains('btn-remove')) {
+                    btn.addEventListener('click', (e) => {
+                        const index = parseInt(e.target.dataset.relIndex);
+                        character.relationships.splice(index, 1);
+                        saveData();
+                        renderCharacterForm(character);
+                    });
+                }
+            });
+
+            // Update relationships
+            document.querySelectorAll('.rel-name, .rel-type, .rel-description').forEach(input => {
+                input.addEventListener('input', (e) => {
+                    const index = parseInt(e.target.dataset.relIndex);
+                    const field = e.target.classList.contains('rel-name') ? 'name' :
+                                  e.target.classList.contains('rel-type') ? 'type' : 'description';
+                    character.relationships[index][field] = e.target.value;
+                    saveData();
+                });
+            });
+
+            // View character map
+            const viewCharMapBtn = document.getElementById(`viewCharacterMap-${id}`);
+            if (viewCharMapBtn) {
+                viewCharMapBtn.addEventListener('click', openRelationshipMap);
+            }
+
+            // NEW: Timeline events
+            const addTimelineBtn = document.getElementById(`addTimelineEvent-${id}`);
+            if (addTimelineBtn) {
+                addTimelineBtn.addEventListener('click', () => {
+                    const date = prompt('Enter date or age (e.g., "Age 5" or "2010"):');
+                    const event = prompt('Enter event description:');
+                    if (date && event) {
+                        character.timeline.push({ date, event });
+                        saveData();
+                        renderCharacterForm(character);
+                    }
+                });
+            }
+
+            // Remove timeline event
+            document.querySelectorAll(`[data-timeline-index]`).forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    const index = parseInt(e.target.dataset.timelineIndex);
+                    character.timeline.splice(index, 1);
+                    saveData();
+                    renderCharacterForm(character);
+                });
+            });
+
+            // NEW: Start Interview
+            const startInterviewBtn = document.getElementById(`startInterview-${id}`);
+            if (startInterviewBtn) {
+                startInterviewBtn.addEventListener('click', () => openInterview(character));
+            }
+
+            // Delete character
+            const deleteBtn = document.getElementById(`deleteCharacter-${id}`);
+            if (deleteBtn) {
+                deleteBtn.addEventListener('click', () => {
+                    if (confirm(`Are you sure you want to delete ${character.name}?`)) {
+                        state.characters = state.characters.filter(c => c.id !== id);
+                        state.currentCharacterId = null;
+                        saveData();
+                        renderCharacterList();
+                        showDashboard();
+                        updateStats();
+                    }
+                });
+            }
+        }
+
+        // NEW: Open Character Interview
+        function openInterview(character) {
+            const categories = Object.keys(interviewQuestions);
+            
+            let html = '<div class="tabs">';
+            categories.forEach((cat, index) => {
+                const label = cat.replace('_', ' ').replace(/\b\w/g, l => l.toUpperCase());
+                html += `<button class="tab ${index === 0 ? 'active' : ''}" data-tab="${cat}">${label}</button>`;
+            });
+            html += '</div>';
+            
+            categories.forEach((cat, catIndex) => {
+                html += `<div class="tab-content ${catIndex === 0 ? 'active' : ''}" data-tab-content="${cat}">`;
+                interviewQuestions[cat].forEach((question, qIndex) => {
+                    const answerId = `${cat}_${qIndex}`;
+                    const answer = character.interviewAnswers[answerId] || '';
+                    html += `
+                        <div class="interview-question">
+                            <div class="question-number">Question ${qIndex + 1}</div>
+                            <div class="question-text">${question}</div>
+                            <textarea class="form-textarea interview-answer" data-answer-id="${answerId}" placeholder="Answer in character's voice...">${answer}</textarea>
+                        </div>
+                    `;
+                });
+                html += '</div>';
+            });
+            
+            elements.interviewContent.innerHTML = html;
+            elements.interviewModal.classList.add('active');
+            
+            // Tab switching
+            document.querySelectorAll('.tab').forEach(tab => {
+                tab.addEventListener('click', (e) => {
+                    const targetTab = e.target.dataset.tab;
+                    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+                    document.querySelectorAll('.tab-content').forEach(tc => tc.classList.remove('active'));
+                    e.target.classList.add('active');
+                    document.querySelector(`[data-tab-content="${targetTab}"]`).classList.add('active');
+                });
+            });
+            
+            // Save answers
+            document.querySelectorAll('.interview-answer').forEach(textarea => {
+                textarea.addEventListener('input', (e) => {
+                    const answerId = e.target.dataset.answerId;
+                    character.interviewAnswers[answerId] = e.target.value;
+                    saveData();
+                });
+            });
+        }
+
+        // Open Relationship Map
+        function openRelationshipMap() {
+            loadRelationships();
+            populateRelationshipMap();
+            elements.relationshipMapModal.classList.add('active');
+        }
+
+        // Close Relationship Map
+        function closeRelationshipMap() {
+            elements.relationshipMapModal.classList.remove('active');
+            resetSelection();
+        }
+        
+        // Populate relationship map with all characters
+        function populateRelationshipMap() {
+            const canvas = elements.relationshipCanvas;
+            canvas.innerHTML = '';
+            
+            if (state.characters.length === 0) {
+                canvas.innerHTML = '<div style="display: flex; align-items: center; justify-content: center; height: 100%; color: var(--text-muted); text-align: center; font-size: 14px; padding: 20px;">Create some characters first to see them on the relationship map!</div>';
+                return;
+            }
+            
+            // Create SVG canvas for lines
+            const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+            svg.id = 'relationshipSvg';
+            svg.style.position = 'absolute';
+            svg.style.top = '0';
+            svg.style.left = '0';
+            svg.style.width = '100%';
+            svg.style.height = '100%';
+            svg.style.pointerEvents = 'none';
+            svg.style.zIndex = '1';
+            canvas.appendChild(svg);
+            
+            // Layout characters in grid and create nodes
+            layoutCharactersInGrid();
+            renderAllCharacterNodes();
+            renderAllRelationshipLines();
+        }
+        
+        // Layout characters in a grid pattern
+        function layoutCharactersInGrid() {
+            const cols = Math.ceil(Math.sqrt(state.characters.length));
+            const spacing = 150;
+            const offsetX = 100;
+            const offsetY = 100;
+            
+            state.characters.forEach((char, index) => {
+                if (!relationshipMapState.characterPositions[char.id]) {
+                    const col = index % cols;
+                    const row = Math.floor(index / cols);
+                    relationshipMapState.characterPositions[char.id] = {
+                        x: offsetX + col * spacing,
+                        y: offsetY + row * spacing
+                    };
+                }
+            });
+        }
+        
+        // Render all character nodes
+        function renderAllCharacterNodes() {
+            const canvas = elements.relationshipCanvas;
+            
+            state.characters.forEach(char => {
+                const pos = relationshipMapState.characterPositions[char.id];
+                const node = createCharacterNode(char, pos.x, pos.y);
+                canvas.appendChild(node);
+            });
+        }
+        
+        // Create a single character node
+        function createCharacterNode(character, x, y) {
+            const node = document.createElement('div');
+            node.className = 'character-node';
+            node.id = `node_${character.id}`;
+            node.dataset.charId = character.id;
+            node.textContent = character.name || 'Unnamed';
+            node.style.left = x + 'px';
+            node.style.top = y + 'px';
+            node.style.zIndex = '2';
+            
+            // Click handler for relationship creation
+            node.addEventListener('click', (e) => handleCharacterClick(character.id, e));
+            
+            // Drag handlers (mouse and touch)
+            node.addEventListener('mousedown', (e) => startCharacterDrag(character.id, e));
+            node.addEventListener('touchstart', (e) => startCharacterDrag(character.id, e), { passive: false });
+            
+            return node;
+        }
+        
+        // Handle character click for relationship creation
+        function handleCharacterClick(charId, e) {
+            e.stopPropagation();
+            
+            if (!relationshipMapState.selectedCharacter) {
+                // First click - select source character
+                relationshipMapState.selectedCharacter = charId;
+                highlightCharacter(charId, true);
+                showRelationshipTypeSelector();
+            } else if (relationshipMapState.selectedRelationshipType) {
+                // Second click - create relationship
+                if (charId !== relationshipMapState.selectedCharacter) {
+                    createRelationship(
+                        relationshipMapState.selectedCharacter,
+                        charId,
+                        relationshipMapState.selectedRelationshipType
+                    );
+                }
+                resetSelection();
+            }
+        }
+        
+        // Highlight selected character
+        function highlightCharacter(charId, highlight) {
+            const node = document.getElementById(`node_${charId}`);
+            if (node) {
+                if (highlight) {
+                    node.classList.add('selected');
+                } else {
+                    node.classList.remove('selected');
+                }
+            }
+        }
+        
+        // Show relationship type selector
+        function showRelationshipTypeSelector() {
+            const canvas = elements.relationshipCanvas;
+            
+            // Remove existing selector if any
+            const existing = document.getElementById('relationshipTypeSelector');
+            if (existing) existing.remove();
+            
+            const selector = document.createElement('div');
+            selector.id = 'relationshipTypeSelector';
+            selector.style.cssText = `
+                position: absolute;
+                top: 10px;
+                left: 50%;
+                transform: translateX(-50%);
+                background: var(--bg-primary);
+                border: 2px solid var(--border-color);
+                border-radius: 8px;
+                padding: 15px;
+                box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+                z-index: 1000;
+                display: flex;
+                gap: 10px;
+                flex-wrap: wrap;
+                max-width: 500px;
+            `;
+            
+            const title = document.createElement('div');
+            title.textContent = 'Select Relationship Type:';
+            title.style.cssText = 'width: 100%; font-weight: bold; margin-bottom: 5px; font-size: 14px;';
+            selector.appendChild(title);
+            
+            Object.entries(RELATIONSHIP_LABELS).forEach(([type, label]) => {
+                const btn = document.createElement('button');
+                btn.textContent = label;
+                btn.style.cssText = `
+                    padding: 8px 16px;
+                    border: 2px solid ${RELATIONSHIP_COLORS[type]};
+                    background: ${RELATIONSHIP_COLORS[type]}22;
+                    color: ${RELATIONSHIP_COLORS[type]};
+                    border-radius: 6px;
+                    cursor: pointer;
+                    font-size: 13px;
+                    font-weight: 500;
+                    transition: all 0.2s;
+                `;
+                btn.onmouseover = () => {
+                    btn.style.background = RELATIONSHIP_COLORS[type];
+                    btn.style.color = '#fff';
+                };
+                btn.onmouseout = () => {
+                    btn.style.background = RELATIONSHIP_COLORS[type] + '22';
+                    btn.style.color = RELATIONSHIP_COLORS[type];
+                };
+                btn.onclick = () => {
+                    relationshipMapState.selectedRelationshipType = type;
+                    selector.remove();
+                    showInstructionMessage();
+                };
+                selector.appendChild(btn);
+            });
+            
+            const cancelBtn = document.createElement('button');
+            cancelBtn.textContent = 'Cancel';
+            cancelBtn.style.cssText = `
+                padding: 8px 16px;
+                border: 2px solid var(--border-color);
+                background: var(--bg-secondary);
+                color: var(--text-primary);
+                border-radius: 6px;
+                cursor: pointer;
+                font-size: 13px;
+                width: 100%;
+                margin-top: 5px;
+            `;
+            cancelBtn.onclick = () => {
+                resetSelection();
+            };
+            selector.appendChild(cancelBtn);
+            
+            canvas.appendChild(selector);
+        }
+        
+        // Show instruction message
+        function showInstructionMessage() {
+            const canvas = elements.relationshipCanvas;
+            const existing = document.getElementById('instructionMessage');
+            if (existing) existing.remove();
+            
+            const msg = document.createElement('div');
+            msg.id = 'instructionMessage';
+            msg.textContent = 'Now click on the target character to create the relationship';
+            msg.style.cssText = `
+                position: absolute;
+                top: 10px;
+                left: 50%;
+                transform: translateX(-50%);
+                background: var(--primary-color);
+                color: white;
+                padding: 12px 20px;
+                border-radius: 8px;
+                font-size: 14px;
+                font-weight: 500;
+                box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+                z-index: 1000;
+                animation: fadeIn 0.3s;
+            `;
+            canvas.appendChild(msg);
+        }
+        
+        // Create a relationship
+        function createRelationship(fromId, toId, type) {
+            // Check if relationship already exists
+            const exists = relationshipMapState.relationships.find(r =>
+                (r.from === fromId && r.to === toId) ||
+                (r.from === toId && r.to === fromId)
+            );
+            
+            if (exists) {
+                alert('A relationship already exists between these characters.');
+                return;
+            }
+            
+            relationshipMapState.relationships.push({ from: fromId, to: toId, type });
+            saveRelationships();
+            renderAllRelationshipLines();
+        }
+        
+        // Render all relationship lines
+        function renderAllRelationshipLines() {
+            const svg = document.getElementById('relationshipSvg');
+            if (!svg) return;
+            
+            // Clear existing lines
+            svg.innerHTML = '';
+            
+            // Draw each relationship line with CSS glow
+            relationshipMapState.relationships.forEach(rel => {
+                const fromPos = relationshipMapState.characterPositions[rel.from];
+                const toPos = relationshipMapState.characterPositions[rel.to];
+                
+                if (fromPos && toPos) {
+                    const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+                    line.setAttribute('x1', fromPos.x + 40);
+                    line.setAttribute('y1', fromPos.y + 20);
+                    line.setAttribute('x2', toPos.x + 40);
+                    line.setAttribute('y2', toPos.y + 20);
+                    line.setAttribute('stroke', RELATIONSHIP_COLORS[rel.type]);
+                    line.setAttribute('stroke-width', '4');
+                    line.style.filter = `drop-shadow(0 0 6px ${RELATIONSHIP_COLORS[rel.type]})`;
+                    line.style.transition = 'all 0.3s';
+                    line.classList.add('relationship-line-svg');
+                    svg.appendChild(line);
+                }
+            });
+        }
+        
+        // Start dragging a character (supports both mouse and touch)
+        function startCharacterDrag(charId, e) {
+            e.preventDefault();
+            e.stopPropagation();
+            
+            const node = document.getElementById(`node_${charId}`);
+            const canvas = elements.relationshipCanvas;
+            const rect = canvas.getBoundingClientRect();
+            
+            // Get client position from mouse or touch event
+            const getClientPos = (event) => {
+                if (event.touches && event.touches.length > 0) {
+                    return { x: event.touches[0].clientX, y: event.touches[0].clientY };
+                }
+                return { x: event.clientX, y: event.clientY };
+            };
+            
+            const startPos = getClientPos(e);
+            const offsetX = startPos.x - rect.left - relationshipMapState.characterPositions[charId].x;
+            const offsetY = startPos.y - rect.top - relationshipMapState.characterPositions[charId].y;
+            
+            function onMove(e) {
+                e.preventDefault();
+                const rect = canvas.getBoundingClientRect();
+                const pos = getClientPos(e);
+                let newX = pos.x - rect.left - offsetX;
+                let newY = pos.y - rect.top - offsetY;
+                
+                newX = Math.max(0, Math.min(newX, rect.width - 80));
+                newY = Math.max(0, Math.min(newY, rect.height - 40));
+                
+                relationshipMapState.characterPositions[charId] = { x: newX, y: newY };
+                node.style.left = newX + 'px';
+                node.style.top = newY + 'px';
+                
+                renderAllRelationshipLines();
+            }
+            
+            function onEnd() {
+                document.removeEventListener('mousemove', onMove);
+                document.removeEventListener('mouseup', onEnd);
+                document.removeEventListener('touchmove', onMove);
+                document.removeEventListener('touchend', onEnd);
+                document.removeEventListener('touchcancel', onEnd);
+                savePositions();
+            }
+            
+            document.addEventListener('mousemove', onMove);
+            document.addEventListener('mouseup', onEnd);
+            document.addEventListener('touchmove', onMove, { passive: false });
+            document.addEventListener('touchend', onEnd);
+            document.addEventListener('touchcancel', onEnd);
+        }
+        
+        // Reset selection state
+        function resetSelection() {
+            if (relationshipMapState.selectedCharacter) {
+                highlightCharacter(relationshipMapState.selectedCharacter, false);
+            }
+            relationshipMapState.selectedCharacter = null;
+            relationshipMapState.selectedRelationshipType = null;
+            
+            const selector = document.getElementById('relationshipTypeSelector');
+            if (selector) selector.remove();
+            
+            const msg = document.getElementById('instructionMessage');
+            if (msg) msg.remove();
+        }
+        
+        // Save relationships to localStorage
+        function saveRelationships() {
+            localStorage.setItem('characterRelationships', JSON.stringify(relationshipMapState.relationships));
+        }
+        
+        // Load relationships from localStorage
+        function loadRelationships() {
+            const saved = localStorage.getItem('characterRelationships');
+            if (saved) {
+                relationshipMapState.relationships = JSON.parse(saved);
+            }
+            
+            const savedPositions = localStorage.getItem('characterPositions');
+            if (savedPositions) {
+                relationshipMapState.characterPositions = JSON.parse(savedPositions);
+            }
+        }
+        
+        // Save character positions
+        function savePositions() {
+            localStorage.setItem('characterPositions', JSON.stringify(relationshipMapState.characterPositions));
+        }
+        
+        // Reset layout handler
+        function resetLayoutHandler() {
+            relationshipMapState.characterPositions = {};
+            populateRelationshipMap();
+            savePositions();
+        }
+        
+        // Add relationship button handler (now unused - keeping for compatibility)
+        function addRelationshipHandler() {
+            alert('To create a relationship:\n\n1. Click on a character\n2. Select relationship type\n3. Click on target character');
+        }
+
+        // NEW: Open Comparison Matrix
+        function openComparison() {
+            if (state.characters.length === 0) {
+                alert('No characters to compare. Create some characters first!');
+                return;
+            }
+            
+            let html = '<table class="comparison-table"><thead><tr><th>Attribute</th>';
+            state.characters.forEach(char => {
+                html += `<th>${char.name}</th>`;
+            });
+            html += '</tr></thead><tbody>';
+            
+            const attributes = [
+                { label: 'Role', key: 'role' },
+                { label: 'Age', key: 'age' },
+                { label: 'Occupation', key: 'occupation' },
+                { label: 'Primary Motivation', key: 'motivations' },
+                { label: 'Greatest Fear', key: 'fears' },
+                { label: 'Key Strength', key: 'strengths' },
+                { label: 'Key Weakness', key: 'weaknesses' },
+                { label: 'Philosophy', key: 'philosophy' }
+            ];
+            
+            attributes.forEach(attr => {
+                html += `<tr><td><strong>${attr.label}</strong></td>`;
+                state.characters.forEach(char => {
+                    let value = char[attr.key] || '-';
+                    if (value.length > 100) {
+                        value = value.substring(0, 100) + '...';
+                    }
+                    html += `<td>${value}</td>`;
+                });
+                html += '</tr>';
+            });
+            
+            html += '</tbody></table>';
+            
+            elements.comparisonContent.innerHTML = html;
+            elements.comparisonModal.classList.add('active');
+        }
+
+        // Export Data
+        function exportData() {
+            const dataStr = JSON.stringify({
+                characters: state.characters,
+                storyName: state.storyName,
+                exportDate: new Date().toISOString()
+            }, null, 2);
+            
+            const blob = new Blob([dataStr], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `character-forge-backup-${new Date().toISOString().split('T')[0]}.json`;
+            a.click();
+            URL.revokeObjectURL(url);
+        }
+
+        // Export PDF
+        function exportPDF() {
+            const printWindow = window.open('', '_blank');
+            
+            let html = `
+                <!DOCTYPE html>
+                <html>
+                <head>
+                    <title>${state.storyName || 'Untitled Story'} - Character Dossier</title>
+                    <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@400;600&display=swap" rel="stylesheet">
+                    <style>
+                        body {
+                            font-family: 'Crimson Pro', serif;
+                            line-height: 1.6;
+                            margin: 0;
+                            padding: 0;
+                            color: #000;
+                        }
+                        .cover-page {
+                            height: 100vh;
+                            display: flex;
+                            flex-direction: column;
+                            justify-content: center;
+                            align-items: center;
+                            text-align: center;
+                            page-break-after: always;
+                        }
+                        .cover-title {
+                            font-size: 48px;
+                            font-weight: 600;
+                            text-transform: uppercase;
+                            letter-spacing: 4px;
+                            margin-bottom: 20px;
+                        }
+                        .cover-subtitle {
+                            font-size: 24px;
+                            font-style: italic;
+                            margin-bottom: 60px;
+                        }
+                        .cover-meta {
+                            font-size: 14px;
+                            color: #666;
+                        }
+                        .character-page {
+                            padding: 1in;
+                            page-break-after: always;
+                        }
+                        .character-name {
+                            font-size: 32px;
+                            font-weight: 600;
+                            margin-bottom: 10px;
+                            border-bottom: 2px solid #000;
+                            padding-bottom: 10px;
+                        }
+                        .character-meta {
+                            font-size: 14px;
+                            color: #666;
+                            margin-bottom: 30px;
+                        }
+                        .section {
+                            margin-bottom: 25px;
+                        }
+                        .section-title {
+                            font-size: 16px;
+                            font-weight: 600;
+                            text-transform: uppercase;
+                            letter-spacing: 1px;
+                            margin-bottom: 10px;
+                            border-top: 1px solid #000;
+                            padding-top: 10px;
+                        }
+                        .section-content {
+                            font-size: 14px;
+                        }
+                        @media print {
+                            .character-page {
+                                page-break-after: always;
+                            }
+                        }
+                    </style>
+                </head>
+                <body>
+                    <!-- Cover Page -->
+                    <div class="cover-page">
+                        <div class="cover-title">${(state.storyName || 'Untitled Story').toUpperCase()}</div>
+                        <div class="cover-subtitle">Character Dossier</div>
+                        <div class="cover-meta">
+                            <p>Created with Character Forge</p>
+                            <p>${new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</p>
+                            <p>${state.characters.length} Character${state.characters.length !== 1 ? 's' : ''}</p>
+                        </div>
+                    </div>
+            `;
+            
+            state.characters.forEach(char => {
+                html += `
+                    <div class="character-page">
+                        <h1 class="character-name">${char.name}</h1>
+                        <div class="character-meta">
+                            <strong>Role:</strong> ${char.role} | 
+                            <strong>Age:</strong> ${char.age || 'N/A'} | 
+                            <strong>Occupation:</strong> ${char.occupation || 'N/A'} | 
+                            <strong>Genre:</strong> ${char.genre || 'N/A'}
+                        </div>
+                `;
+                
+                const sections = [
+                    { title: 'Physical Description', content: char.physicalDescription },
+                    { title: 'Personality & Traits', content: char.personality + (char.traits.length ? '<br><br><strong>Traits:</strong> ' + char.traits.join(', ') : '') },
+                    { title: 'Background & History', content: char.background },
+                    { title: 'Motivations & Goals', content: char.motivations },
+                    { title: 'Fears & Obstacles', content: char.fears },
+                    { title: 'Strengths', content: char.strengths },
+                    { title: 'Weaknesses', content: char.weaknesses },
+                    { title: 'Character Arc', content: char.characterArc },
+                    { title: 'Character Voice', content: `Greeting: ${char.voice.greeting}<br>Farewell: ${char.voice.farewell}<br>Speech Pattern: ${char.voice.speechPattern}<br>Dialect: ${char.voice.dialect}` },
+                    { title: 'Daily Life', content: char.dailyLife.routine },
+                    { title: 'Philosophy', content: char.philosophy },
+                    { title: 'Secrets', content: char.secrets }
+                ];
+                
+                if (['Antagonist', 'Villain', 'Anti-Villain'].includes(char.role)) {
+                    sections.push({ title: 'Villain Motivation', content: char.villainMotivation });
+                }
+                
+                sections.forEach(section => {
+                    if (section.content) {
+                        html += `
+                            <div class="section">
+                                <div class="section-title">${section.title}</div>
+                                <div class="section-content">${section.content}</div>
+                            </div>
+                        `;
+                    }
+                });
+                
+                if (char.relationships.length > 0) {
+                    html += '<div class="section"><div class="section-title">Relationships</div><div class="section-content">';
+                    char.relationships.forEach(rel => {
+                        html += `<p><strong>${rel.name}</strong> (${rel.type}): ${rel.description}</p>`;
+                    });
+                    html += '</div></div>';
+                }
+                
+                if (char.pockets) {
+                    html += `
+                        <div class="section">
+                            <div class="section-title">What's in Their Pockets</div>
+                            <div class="section-content">${char.pockets}</div>
+                        </div>
+                    `;
+                }
+                
+                if (char.notes) {
+                    html += `
+                        <div class="section">
+                            <div class="section-title">Additional Notes</div>
+                            <div class="section-content">${char.notes}</div>
+                        </div>
+                    `;
+                }
+                
+                html += '</div>';
+            });
+            
+            html += '</body></html>';
+            
+            printWindow.document.write(html);
+            printWindow.document.close();
+            printWindow.focus();
+            
+            setTimeout(() => {
+                printWindow.print();
+            }, 500);
+        }
+
+        // Import Data
+        function importData() {
+            const input = document.createElement('input');
+            input.type = 'file';
+            input.accept = 'application/json';
+            
+            input.onchange = (e) => {
+                const file = e.target.files[0];
+                const reader = new FileReader();
+                
+                reader.onload = (event) => {
+                    try {
+                        const data = JSON.parse(event.target.result);
+                        if (confirm('This will replace all current data. Continue?')) {
+                            state.characters = data.characters || [];
+                            state.storyName = data.storyName || '';
+                            elements.storyName.value = state.storyName;
+                            saveData();
+                            renderCharacterList();
+                            showDashboard();
+                            updateStats();
+                            alert('Data imported successfully!');
+                        }
+                    } catch (error) {
+                        alert('Error importing data. Please check the file format.');
+                    }
+                };
+                
+                reader.readAsText(file);
+            };
+            
+            input.click();
+        }
+
+        // Initialize app on load
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', init);
+        } else {
+            init();
+        }
+    </script>
+</body>
+</html>
