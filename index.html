@@ -966,25 +966,33 @@
             }
 
             .header-bottom {
-                flex-wrap: nowrap;
+                flex-direction: column;
+                align-items: stretch;
                 gap: 12px;
             }
             
+            .story-name-group {
+                width: 100%;
+            }
+            
             .header-right {
-                flex: 1;
-                min-width: 0;
+                width: 100%;
+                overflow-x: auto;
+                overflow-y: hidden;
+                -webkit-overflow-scrolling: touch;
+                scrollbar-width: none;
+                -ms-overflow-style: none;
+                flex-wrap: nowrap;
+            }
+            
+            .header-right::-webkit-scrollbar {
+                display: none;
             }
             
             .header-bottom button {
                 font-size: 13px;
                 padding: 10px 14px;
                 flex-shrink: 0;
-            }
-            
-            .story-name-group {
-                flex-direction: column;
-                align-items: stretch;
-                width: 100%;
             }
             
             .story-name-input {
